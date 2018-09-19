@@ -58,14 +58,7 @@ public class MockupOrderWindowDialog extends JDialog {
 			MockupOrderWindowDialog dialog = new MockupOrderWindowDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			try {
-				UIManager.setLookAndFeel(
-				        UIManager.getSystemLookAndFeelClassName());
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-					| UnsupportedLookAndFeelException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,7 +68,14 @@ public class MockupOrderWindowDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public MockupOrderWindowDialog() {
-		
+		try {
+			UIManager.setLookAndFeel(
+			        UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("New Order");
 		setBounds(100, 100, 342, 400);
