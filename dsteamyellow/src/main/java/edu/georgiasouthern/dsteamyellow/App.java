@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
-
+import javax.swing.LookAndFeel;
 import java.awt.BorderLayout;
 
 public class App {
@@ -18,7 +18,8 @@ public class App {
 				try {
 					App window = new App();
 					window.frame.setVisible(true);
-					UIManager m = new UIManager(UIManager.getSystemLookAndFeelClassName());
+					UIManager m = new UIManager();
+					m.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
