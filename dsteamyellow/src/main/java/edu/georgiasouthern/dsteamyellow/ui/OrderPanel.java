@@ -1,4 +1,4 @@
-package edu.georgiasouthern.dsteamyellow;
+package edu.georgiasouthern.dsteamyellow.ui;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
