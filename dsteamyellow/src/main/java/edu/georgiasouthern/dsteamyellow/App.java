@@ -3,6 +3,10 @@ package edu.georgiasouthern.dsteamyellow;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+
+import java.awt.BorderLayout;
 
 public class App {
 
@@ -14,6 +18,7 @@ public class App {
 				try {
 					App window = new App();
 					window.frame.setVisible(true);
+					UIManager m = new UIManager(UIManager.getSystemLookAndFeelClassName());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -29,6 +34,12 @@ public class App {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 667, 441);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		
+		OrderPanel orderPanel = new OrderPanel();
+		tabbedPane.addTab("Orders", null, orderPanel, null);
 	}
 
 }
