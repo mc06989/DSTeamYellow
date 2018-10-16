@@ -2,6 +2,9 @@ package edu.georgiasouthern.dsteamyellow.ui;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+
+import edu.georgiasouthern.dsteamyellow.db.DBConnection;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -18,7 +21,7 @@ public class OrderPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 564, SpringLayout.WEST, this);
 		add(scrollPane);
 		
-		Object[][] data= {{'1','2'},{'3','4'}};
+		Object[][] data= {};
 		String[] columnnames= {"Test column 1", "Test column 2"};
 		
 		table = new JTable(data,columnnames);

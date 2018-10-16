@@ -2,9 +2,8 @@ package edu.georgiasouthern.dsteamyellow.db;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 public class NorthwindTableDefinitions {
-
+	
 	@DatabaseTable(tableName="categories")
 	static class Category{
 		@DatabaseField(id=true)
@@ -39,4 +38,50 @@ public class NorthwindTableDefinitions {
 		
 	}
 	
+	@DatabaseTable(tableName="Orders")
+	static class Order{
+		
+		
+		public Order() {
+			
+		}
+	}
+	
+	@DatabaseTable(tableName="OrderView")
+	static class OrderView{
+		@DatabaseField(canBeNull=false)
+		private int orderID;
+		public int getOrderID() {
+			return orderID;
+		}
+
+		public void setOrderID(int orderID) {
+			this.orderID = orderID;
+		}
+
+		public String getCustomerID() {
+			return customerID;
+		}
+
+		public void setCustomerID(String customerID) {
+			this.customerID = customerID;
+		}
+
+		public int getEmployeeID() {
+			return employeeID;
+		}
+
+		public void setEmployeeID(int employeeID) {
+			this.employeeID = employeeID;
+		}
+
+		@DatabaseField(canBeNull=false)
+		private String customerID;
+		@DatabaseField(canBeNull=true)
+		private int employeeID;
+		
+		public OrderView() {
+			
+		}
+	}
 }
