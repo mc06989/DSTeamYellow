@@ -4,9 +4,13 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
+import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.OrderView;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import java.util.List;
+
 import javax.swing.JButton;
 
 public class OrderPanel extends JPanel {
@@ -21,10 +25,11 @@ public class OrderPanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 564, SpringLayout.WEST, this);
 		add(scrollPane);
 		
-		Object[][] data= {};
-		String[] columnnames= {"Test column 1", "Test column 2"};
+		Object[][] OrderViewData = DBConnection.getInstance().getOrderViewList();
+
+		String[] columnnames= {"OrderID", "Contact Name", "Shipping Company", "Required Date"};
 		
-		table = new JTable(data,columnnames);
+		table = new JTable(OrderViewData,columnnames);
 		scrollPane.setViewportView(table);
 		
 		JPanel panel = new JPanel();

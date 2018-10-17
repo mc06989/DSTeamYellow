@@ -2,6 +2,7 @@ package edu.georgiasouthern.dsteamyellow.db;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import java.util.Date;
 public class NorthwindTableDefinitions {
 	
 	@DatabaseTable(tableName="categories")
@@ -38,48 +39,49 @@ public class NorthwindTableDefinitions {
 		
 	}
 	
-	@DatabaseTable(tableName="Orders")
-	static class Order{
-		
-		
-		public Order() {
-			
-		}
-	}
-	
 	@DatabaseTable(tableName="OrderView")
-	static class OrderView{
+	public static class OrderView{
 		@DatabaseField(canBeNull=false)
-		private int orderID;
+		private int OrderID;
+		@DatabaseField(canBeNull=true)
+		private String contactName;
+		@DatabaseField(canBeNull=true)
+		private Date RequiredDate;
+		@DatabaseField(canBeNull=false)
+		private String CompanyName;
+		
 		public int getOrderID() {
-			return orderID;
+			return OrderID;
 		}
 
 		public void setOrderID(int orderID) {
-			this.orderID = orderID;
+			OrderID = orderID;
 		}
 
-		public String getCustomerID() {
-			return customerID;
+		public String getContactName() {
+			return contactName;
 		}
 
-		public void setCustomerID(String customerID) {
-			this.customerID = customerID;
+		public void setContactName(String contactName) {
+			this.contactName = contactName;
 		}
 
-		public int getEmployeeID() {
-			return employeeID;
+		public Date getRequiredDate() {
+			return RequiredDate;
 		}
 
-		public void setEmployeeID(int employeeID) {
-			this.employeeID = employeeID;
+		public void setRequiredDate(Date requiredDate) {
+			RequiredDate = requiredDate;
 		}
 
-		@DatabaseField(canBeNull=false)
-		private String customerID;
-		@DatabaseField(canBeNull=true)
-		private int employeeID;
-		
+		public String getCompanyName() {
+			return CompanyName;
+		}
+
+		public void setCompanyName(String companyName) {
+			CompanyName = companyName;
+		}
+
 		public OrderView() {
 			
 		}
