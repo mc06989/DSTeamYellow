@@ -2,6 +2,7 @@ package edu.georgiasouthern.dsteamyellow.ui;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.table.DefaultTableModel;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
 import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.OrderView;
@@ -29,8 +30,12 @@ public class OrderPanel extends JPanel {
 
 		String[] columnnames= {"OrderID", "Contact Name", "Shipping Company", "Required Date"};
 		
+		
+
+		
 		table = new JTable(OrderViewData,columnnames);
 		scrollPane.setViewportView(table);
+		
 		
 		JPanel panel = new JPanel();
 		springLayout.putConstraint(SpringLayout.NORTH, panel, 365, SpringLayout.NORTH, this);

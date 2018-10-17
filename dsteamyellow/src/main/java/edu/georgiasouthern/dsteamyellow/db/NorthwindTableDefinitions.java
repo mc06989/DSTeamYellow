@@ -86,4 +86,172 @@ public class NorthwindTableDefinitions {
 			
 		}
 	}
+	
+	@DatabaseTable(tableName="Employees")
+	public static class Employee{
+		@DatabaseField(id=true,canBeNull=false)
+		private int EmployeeID;
+		@DatabaseField(canBeNull=false)
+		private String LastName;
+		@DatabaseField(canBeNull=false)
+		private String FirstName;
+		@DatabaseField(canBeNull=false)
+		private String Title;
+		@DatabaseField(canBeNull=true)
+		private String TitleOfCourtesy;
+		@DatabaseField(canBeNull=true)
+		private Date BirthDate;
+		@DatabaseField(canBeNull=true)
+		private Date HireDate;
+		@DatabaseField(canBeNull=true)
+		private String Address;
+		@DatabaseField(canBeNull=true)
+		private String City;
+		@DatabaseField(canBeNull=true)
+		private String Region;
+		public int getEmployeeID() {
+			return EmployeeID;
+		}
+
+		public void setEmployeeID(int employeeID) {
+			EmployeeID = employeeID;
+		}
+
+		public String getLastName() {
+			return LastName;
+		}
+
+		public void setLastName(String lastName) {
+			LastName = lastName;
+		}
+
+		public String getFirstName() {
+			return FirstName;
+		}
+
+		public void setFirstName(String firstName) {
+			FirstName = firstName;
+		}
+
+		public String getTitle() {
+			return Title;
+		}
+
+		public void setTitle(String title) {
+			Title = title;
+		}
+
+		public String getTitleOfCourtesy() {
+			return TitleOfCourtesy;
+		}
+
+		public void setTitleOfCourtesy(String titleOfCourtesy) {
+			TitleOfCourtesy = titleOfCourtesy;
+		}
+
+		public Date getBirthDate() {
+			return BirthDate;
+		}
+
+		public void setBirthDate(Date birthDate) {
+			BirthDate = birthDate;
+		}
+
+		public Date getHireDate() {
+			return HireDate;
+		}
+
+		public void setHireDate(Date hireDate) {
+			HireDate = hireDate;
+		}
+
+		public String getAddress() {
+			return Address;
+		}
+
+		public void setAddress(String address) {
+			Address = address;
+		}
+
+		public String getCity() {
+			return City;
+		}
+
+		public void setCity(String city) {
+			City = city;
+		}
+
+		public String getRegion() {
+			return Region;
+		}
+
+		public void setRegion(String region) {
+			Region = region;
+		}
+
+		public String getPostalCode() {
+			return PostalCode;
+		}
+
+		public void setPostalCode(String postalCode) {
+			PostalCode = postalCode;
+		}
+
+		public String getCountry() {
+			return Country;
+		}
+
+		public void setCountry(String country) {
+			Country = country;
+		}
+
+		public String getHomePhone() {
+			return HomePhone;
+		}
+
+		public void setHomePhone(String homePhone) {
+			HomePhone = homePhone;
+		}
+
+		public String getExtension() {
+			return Extension;
+		}
+
+		public void setExtension(String extension) {
+			Extension = extension;
+		}
+
+		public int getReportsTo() {
+			return ReportsTo;
+		}
+
+		public void setReportsTo(int reportsTo) {
+			ReportsTo = reportsTo;
+		}
+
+		public String getPhotopath() {
+			return Photopath;
+		}
+
+		public void setPhotopath(String photopath) {
+			Photopath = photopath;
+		}
+
+		@DatabaseField(canBeNull=true)
+		private String PostalCode;
+		@DatabaseField(canBeNull=true)
+		private String Country;
+		@DatabaseField(canBeNull=true)
+		private String HomePhone;
+		@DatabaseField(canBeNull=true)
+		private String Extension;
+		@DatabaseField(canBeNull=true)
+		private int ReportsTo;
+		@DatabaseField(canBeNull=true)
+		private String Photopath;
+		
+		public Employee() {
+			
+		}
+	}
 }

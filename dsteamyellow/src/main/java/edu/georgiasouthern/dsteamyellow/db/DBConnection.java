@@ -11,11 +11,15 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.*;
 
+
+//Orders - Done
+//OrderDetails
+//Employees
 public class DBConnection {
 	
 	private static volatile DBConnection sdbconnection;
 	public static volatile Dao<OrderView, Integer> orderViewDao;
-	
+	public static volatile Dao<Employee, Integer> employeeDao;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
 			sdbconnection = new DBConnection();
@@ -29,12 +33,9 @@ public class DBConnection {
 		ConnectionSource connectionSource;
 		try {
 			connectionSource = new JdbcConnectionSource(databaseUrl);
-		
-
-			System.out.println(connectionSource.toString());
-		
 			new DaoFactory();
 			orderViewDao = DaoFactory.createDao(connectionSource, OrderView.class);
+			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
 			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -72,4 +73,30 @@ public class DBConnection {
 		return  (Object[][]) d;
 	}
 	
+	
+	public Object[][] getEmployeeList(){
+		List<Employee> orders=null;
+		List<Object[]> a = new ArrayList<>();
+		try {
+			QueryBuilder<Employee, Integer> q = employeeDao.queryBuilder();
+			orders = employeeDao.query(q.prepare());
+			
+			
+			for (Employee o : orders) {
+				ArrayList<Object> b = new ArrayList<Object>();
+				b.add(o.getEmployeeID());
+				a.add(b.toArray());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Object[][] d = new Object[a.size()][];
+		
+		for(int i =0;i<a.size();i++) {
+			d[i]=a.get(i);
+		}
+		return  (Object[][]) d;
+	}
 }
