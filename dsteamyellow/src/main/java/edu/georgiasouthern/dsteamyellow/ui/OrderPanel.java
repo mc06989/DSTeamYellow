@@ -10,9 +10,12 @@ import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.OrderView;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class OrderPanel extends JPanel {
 	private JTable table;
@@ -21,10 +24,23 @@ public class OrderPanel extends JPanel {
 		SpringLayout springLayout = new SpringLayout();
 		setLayout(springLayout);
 		
+		JPanel panel = new JPanel();
+		
+		
+		JLabel activeOrdersLabel = new JLabel("Active Orders");
+		springLayout.putConstraint(SpringLayout.NORTH, activeOrdersLabel,10, SpringLayout.NORTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, activeOrdersLabel,10, SpringLayout.WEST, this);
+		add(activeOrdersLabel);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 47, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 564, SpringLayout.WEST, this);
+		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.SOUTH, activeOrdersLabel);
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, this);
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.NORTH, panel);
+		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, this);
 		add(scrollPane);
+		
+		
+		
 		
 		Object[][] OrderViewData = DBConnection.getInstance().getOrderViewList();
 
@@ -32,22 +48,31 @@ public class OrderPanel extends JPanel {
 		
 		
 
+		table = new JTable();
 		
-		table = new JTable(OrderViewData,columnnames);
+		//table = new JTable(OrderViewData,columnnames);
 		scrollPane.setViewportView(table);
 		
 		
-		JPanel panel = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panel, 365, SpringLayout.NORTH, this);
-		springLayout.putConstraint(SpringLayout.SOUTH, panel, -24, SpringLayout.SOUTH, this);
-		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, panel);
-		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -6, SpringLayout.NORTH, panel);
-		springLayout.putConstraint(SpringLayout.WEST, panel, 10, SpringLayout.WEST, this);
+		
+		
+		springLayout.putConstraint(SpringLayout.SOUTH, panel, -10, SpringLayout.SOUTH, this);
+		springLayout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, scrollPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.NORTH, panel);
 		springLayout.putConstraint(SpringLayout.EAST, panel, -10, SpringLayout.EAST, this);
 		add(panel);
 		
 		JButton btnNewOrder = new JButton("New Order");
 		panel.add(btnNewOrder);
+		btnNewOrder.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OrderDetailFrame odf = new OrderDetailFrame();
+				odf.setVisible(true);
+			}
+			
+		});
 
 	}
 }
