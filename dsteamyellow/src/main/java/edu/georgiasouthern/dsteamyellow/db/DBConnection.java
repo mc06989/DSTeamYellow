@@ -20,6 +20,7 @@ public class DBConnection {
 	private static volatile DBConnection sdbconnection;
 	public static volatile Dao<OrderView, Integer> orderViewDao;
 	public static volatile Dao<Employee, Integer> employeeDao;
+	public static volatile Dao<OrderDetailsView, Integer> orderDetailViewDao;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
 			sdbconnection = new DBConnection();
@@ -36,7 +37,7 @@ public class DBConnection {
 			new DaoFactory();
 			orderViewDao = DaoFactory.createDao(connectionSource, OrderView.class);
 			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
-			
+			orderDetailViewDao = DaoFactory.createDao(connectionSource, OrderDetailsView.class);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -98,5 +99,19 @@ public class DBConnection {
 			d[i]=a.get(i);
 		}
 		return  (Object[][]) d;
+	}
+	
+	public OrderDetailsView getOrderDetails(int oid) {
+		QueryBuilder<OrderDetailsView, Integer> q = orderDetailViewDao.queryBuilder();
+		
+		List<OrderDetailsView> odv = null;
+		try {
+			q.where().eq("OrderId", oid);
+			odv= orderDetailViewDao.query(q.prepare());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return odv.get(0);
 	}
 }

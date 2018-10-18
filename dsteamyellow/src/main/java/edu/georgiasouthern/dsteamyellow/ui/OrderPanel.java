@@ -68,7 +68,7 @@ public class OrderPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OrderDetailFrame odf = new OrderDetailFrame();
+				OrderDetailFrame odf = new OrderDetailFrame(10423);
 				odf.setVisible(true);
 			}
 			

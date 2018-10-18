@@ -87,6 +87,75 @@ public class NorthwindTableDefinitions {
 		}
 	}
 	
+	@DatabaseTable(tableName="OrderDetailsView")
+	public static class OrderDetailsView{
+		
+		@DatabaseField(canBeNull=false)
+		public int OrderID;
+		@DatabaseField(canBeNull=true)
+		public String ShipAddress;
+		@DatabaseField(canBeNull=true)
+		public String ShipPostal;
+		@DatabaseField(canBeNull=false)
+		public String CustomerID;
+		@DatabaseField(canBeNull=true)
+		public String ContactName;
+		@DatabaseField(canBeNull=true)
+		public float TotalPrice;
+		
+		public int getOrderID() {
+			return OrderID;
+		}
+
+		public void setOrderID(int orderID) {
+			OrderID = orderID;
+		}
+
+		public String getShipAddress() {
+			return ShipAddress;
+		}
+
+		public void setShipAddress(String shipAddress) {
+			ShipAddress = shipAddress;
+		}
+
+		public String getShipPostal() {
+			return ShipPostal;
+		}
+
+		public void setShipPostal(String shipPostal) {
+			ShipPostal = shipPostal;
+		}
+
+		public String getCustomerID() {
+			return CustomerID;
+		}
+
+		public void setCustomerID(String customerID) {
+			CustomerID = customerID;
+		}
+
+		public String getContactName() {
+			return ContactName;
+		}
+
+		public void setContactName(String contactName) {
+			ContactName = contactName;
+		}
+
+		public float getTotalPrice() {
+			return TotalPrice;
+		}
+
+		public void setTotalPrice(float totalPrice) {
+			TotalPrice = totalPrice;
+		}
+
+		public OrderDetailsView() {
+			
+		}
+	}
+	
 	@DatabaseTable(tableName="Employees")
 	public static class Employee{
 		@DatabaseField(id=true,canBeNull=false)

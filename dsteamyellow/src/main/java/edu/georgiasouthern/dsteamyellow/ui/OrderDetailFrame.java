@@ -15,6 +15,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
+import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.OrderDetailsView;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
@@ -35,7 +36,7 @@ public class OrderDetailFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OrderDetailFrame frame = new OrderDetailFrame();
+					OrderDetailFrame frame = new OrderDetailFrame(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +48,10 @@ public class OrderDetailFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OrderDetailFrame() {
+	public OrderDetailFrame(int oid) {
+		
+		OrderDetailsView odv = DBConnection.getInstance().getOrderDetails(oid);
+		setTitle("Order "+oid);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 678, 474);
 		contentPane = new JPanel();
@@ -69,13 +73,13 @@ public class OrderDetailFrame extends JFrame {
 		JPanel panel = new JPanel();
 		sl_contentPane.putConstraint(SpringLayout.NORTH, panel, 10, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, panel, 10, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel, 100, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel, 93, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, panel, -10, SpringLayout.WEST, scrollPane);
 		
 		contentPane.add(panel);
 		
 		JPanel panel_1 = new JPanel();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, panel_1, 50, SpringLayout.SOUTH, panel);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, panel_1, 52, SpringLayout.SOUTH, panel);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, contentPane);
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -113,7 +117,28 @@ public class OrderDetailFrame extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, panel_1, -10, SpringLayout.WEST, scrollPane);
 		contentPane.add(panel_1);
-		panel_1.setLayout(new FormLayout(new ColumnSpec[] {},
-			new RowSpec[] {}));
+		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,},
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
+		
+		JLabel lblNewLabel_3 = new JLabel("Customer:");
+		panel_1.add(lblNewLabel_3, "2, 2");
+		
+		JLabel lblCustomername = new JLabel("CustomerName");
+		lblCustomername = new JLabel(odv.ContactName);
+		panel_1.add(lblCustomername, "4, 2");
+		
+		JLabel lblTotalPrice = new JLabel("Total Price");
+		panel_1.add(lblTotalPrice, "2, 4");
+		JLabel lblNewLabel_4 = new JLabel("192.10");
+		lblNewLabel_4 = new JLabel(Float.toString(odv.TotalPrice));
+		panel_1.add(lblNewLabel_4, "4, 4");
 	}
 }
