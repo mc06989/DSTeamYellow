@@ -15,6 +15,9 @@ import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.Employee;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import java.text.SimpleDateFormat;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class EmployeeDetailPanel extends JPanel {
 
@@ -22,8 +25,10 @@ public class EmployeeDetailPanel extends JPanel {
 	 * Create the panel.
 	 */
 	
-	JLabel lblFirstNameData,lblID,lblIDData,lblBirthDate, lblBirthDateData, lblNotes,lblFirstName,lblHireDateData,lblLastNameData,lblHomePhoneData;
+	JLabel lblFirstNameData,lblID,lblIDData,lblBirthDate, lblBirthDateData, lblNotes,lblFirstName,lblHireDateData,lblLastNameData,lblHomePhoneData,lblTitleData, lblExtensionData;
 	JTextPane textPane;
+	private JLabel lblToCData;
+	private JLabel lblAddressData;
 	public EmployeeDetailPanel() {
 
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -70,7 +75,7 @@ public class EmployeeDetailPanel extends JPanel {
 		lblLastNameData = new JLabel("Name");
 		JLabel lblAddress = new JLabel("Address:");
 		JLabel lblTitle = new JLabel("Title:");
-		JLabel lblNone = new JLabel("None");
+		lblTitleData = new JLabel("None");
 		JLabel lblCity = new JLabel("City:");
 		JLabel lblToc = new JLabel("ToC:");
 		JLabel lblRegion = new JLabel("Region:");
@@ -79,6 +84,7 @@ public class EmployeeDetailPanel extends JPanel {
 		JLabel lblExtension = new JLabel("Extension:");
 		JLabel lblCountry = new JLabel("Country:");
 		lblHomePhoneData = new JLabel("912-123-345");
+		lblExtensionData = new JLabel("New label");
 		
 		add(lblID, "2, 2");
 		add(lblIDData, "4, 2");
@@ -92,25 +98,36 @@ public class EmployeeDetailPanel extends JPanel {
 		add(lblHireDateData, "10, 4");
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
 		add(scrollPane, "12, 4, 1, 11, fill, fill");
 		
 		textPane = new JTextPane();
+		textPane.setForeground(SystemColor.textText);
+		textPane.setBackground(SystemColor.control);
+		textPane.setEditable(false);
 		scrollPane.setViewportView(textPane);
 		
 		add(lblLastName, "2, 6");
 		add(lblLastNameData, "4, 6");
 		add(lblAddress, "8, 6");
+		
+		lblAddressData = new JLabel("New label");
+		add(lblAddressData, "10, 6");
 		add(lblTitle, "2, 8");
-		add(lblNone, "4, 8");
+		add(lblTitleData, "4, 8");
 		add(lblCity, "8, 8");
 		add(lblToc, "2, 10");
+		
+		lblToCData = new JLabel("New label");
+		add(lblToCData, "4, 10");
 		add(lblRegion, "8, 10");
 		add(lblHomePhone, "2, 12");
-		
-		
 		add(lblHomePhoneData, "4, 12");
 		add(lblPostalCode, "8, 12");
 		add(lblExtension, "2, 14");
+		
+		
+		add(lblExtensionData, "4, 14");
 		add(lblCountry, "8, 14");
 		
 	}
@@ -124,6 +141,10 @@ public class EmployeeDetailPanel extends JPanel {
 		lblBirthDateData.setText(e.getBirthDate().toString());
 		lblHireDateData.setText(e.getHireDate().toString());
 		lblHomePhoneData.setText(e.getHomePhone());
+		lblTitleData.setText(e.getTitle());
+		lblExtensionData.setText(e.getExtension());
+		lblToCData.setText(e.getTitleOfCourtesy());
+		lblAddressData.setText(e.getAddress());
 		textPane.setText(e.getNotes());
 	}
 
