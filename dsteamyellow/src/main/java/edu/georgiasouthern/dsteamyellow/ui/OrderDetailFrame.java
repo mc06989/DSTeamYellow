@@ -59,8 +59,8 @@ public class OrderDetailFrame extends JFrame {
 		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
-		Object[][] data = DBConnection.getInstance().getEmployeeList();
-		String[] columnnames = {"EmployeeID"};
+		//Object[][] data = DBConnection.getInstance().getEmployeeList();
+		//String[] columnnames = {"EmployeeID"};
 		JScrollPane scrollPane = new JScrollPane();
 		sl_contentPane.putConstraint(SpringLayout.NORTH, scrollPane, 10, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, contentPane);

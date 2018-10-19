@@ -19,8 +19,10 @@ public class DBConnection {
 	
 	private static volatile DBConnection sdbconnection;
 	public static volatile Dao<OrderView, Integer> orderViewDao;
-	public static volatile Dao<Employee, Integer> employeeDao;
+	//public static volatile Dao<Employee, Integer> employeeDao;
 	public static volatile Dao<OrderDetailsView, Integer> orderDetailViewDao;
+	public static volatile Dao<EmployeeView, Integer> employeeViewDao;
+	
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
 			sdbconnection = new DBConnection();
@@ -36,8 +38,8 @@ public class DBConnection {
 			connectionSource = new JdbcConnectionSource(databaseUrl);
 			new DaoFactory();
 			orderViewDao = DaoFactory.createDao(connectionSource, OrderView.class);
-			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
 			orderDetailViewDao = DaoFactory.createDao(connectionSource, OrderDetailsView.class);
+			employeeViewDao = DaoFactory.createDao(connectionSource, EmployeeView.class);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -74,32 +76,33 @@ public class DBConnection {
 		return  (Object[][]) d;
 	}
 	
-	
-	public Object[][] getEmployeeList(){
-		List<Employee> orders=null;
-		List<Object[]> a = new ArrayList<>();
-		try {
-			QueryBuilder<Employee, Integer> q = employeeDao.queryBuilder();
-			orders = employeeDao.query(q.prepare());
-			
-			
-			for (Employee o : orders) {
-				ArrayList<Object> b = new ArrayList<Object>();
-				b.add(o.getEmployeeID());
-				a.add(b.toArray());
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		Object[][] d = new Object[a.size()][];
-		
-		for(int i =0;i<a.size();i++) {
-			d[i]=a.get(i);
-		}
-		return  (Object[][]) d;
-	}
+//	
+//	public Object[][] getEmployeeList(){
+//		List<Employee> orders=null;
+//		List<Object[]> a = new ArrayList<>();
+//		try {
+//			QueryBuilder<Employee, Integer> q = employeeDao.queryBuilder();
+//			orders = employeeDao.query(q.prepare());
+//			
+//			
+//			for (Employee o : orders) {
+//				ArrayList<Object> b = new ArrayList<Object>();
+//				b.add(o.getExtension());
+//				
+//				a.add(b.toArray());
+//			}
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		Object[][] d = new Object[a.size()][];
+//		
+//		for(int i =0;i<a.size();i++) {
+//			d[i]=a.get(i);
+//		}
+//		return  (Object[][]) d;
+//	}
 	
 	public OrderDetailsView getOrderDetails(int oid) {
 		QueryBuilder<OrderDetailsView, Integer> q = orderDetailViewDao.queryBuilder();
@@ -113,5 +116,38 @@ public class DBConnection {
 		}
 		
 		return odv.get(0);
+	}
+	
+	public Object[][] getEmployeeViewList(){
+		List<EmployeeView> orders=null;
+		List<Object[]> a = new ArrayList<>();
+		try {
+			QueryBuilder<EmployeeView, Integer> q = employeeViewDao.queryBuilder();
+			orders = employeeViewDao.query(q.prepare());
+			
+			
+			for (EmployeeView o : orders) {
+				ArrayList<Object> b = new ArrayList<Object>();
+				b.add(o.getEmployeeID());
+				b.add(o.getEmployeeName());
+				b.add(o.getTitle());
+				b.add(o.getFullAddress());
+				b.add(o.getHomePhone());
+				b.add(o.getReportsTo());
+				b.add(o.getReportsToID());
+				
+				a.add(b.toArray());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Object[][] d = new Object[a.size()][];
+		
+		for(int i =0;i<a.size();i++) {
+			d[i]=a.get(i);
+		}
+		return  (Object[][]) d;
 	}
 }

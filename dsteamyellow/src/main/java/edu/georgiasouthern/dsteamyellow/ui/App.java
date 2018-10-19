@@ -17,6 +17,9 @@ public class App {
 		
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public App() {
 		initialize();
 	}
@@ -46,6 +49,9 @@ public class App {
 		
 		OrderPanel orderPanel = new OrderPanel();
 		tabbedPane.addTab("Orders", null, orderPanel, null);
+		EmployeePanel employeePanel = new EmployeePanel();
+		tabbedPane.addTab("Employees", null, employeePanel, null);
+		
 	}
 
 }

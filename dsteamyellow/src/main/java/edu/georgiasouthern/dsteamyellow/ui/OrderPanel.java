@@ -2,6 +2,7 @@ package edu.georgiasouthern.dsteamyellow.ui;
 
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
@@ -10,8 +11,11 @@ import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.OrderView;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -48,9 +52,25 @@ public class OrderPanel extends JPanel {
 		
 		
 
-		table = new JTable();
+		//table = new JTable();
 		
-		//table = new JTable(OrderViewData,columnnames);
+		table = new JTable(OrderViewData,columnnames) {
+			  @Override
+		      public boolean isCellEditable(int row, int column){  
+		          return false;  
+		      }
+		};
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent mouseEvent) {
+				JTable mytable = (JTable)mouseEvent.getSource();
+				Point point = mouseEvent.getPoint();
+				int row = table.rowAtPoint(point);
+				if (mouseEvent.getClickCount()==2&&mytable.getSelectedRow()!=-1) {
+					OrderDetailFrame odf = new OrderDetailFrame((Integer) mytable.getValueAt(mytable.getSelectedRow(),  0));
+					odf.setVisible(true);
+				}
+			}
+		});
 		scrollPane.setViewportView(table);
 		
 		
