@@ -74,7 +74,7 @@ public class OrderPanel extends JPanel {
 		scrollPane.setViewportView(table);
 		
 		
-		
+		 
 		
 		springLayout.putConstraint(SpringLayout.SOUTH, panel, -10, SpringLayout.SOUTH, this);
 		springLayout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, scrollPane);
