@@ -11,7 +11,7 @@ import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
-import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.Employee;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.Employee;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.Font;

@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
-import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.OrderView;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.OrderView;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -88,11 +88,10 @@ public class OrderPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OrderDetailFrame odf = new OrderDetailFrame(10423);
-				odf.setVisible(true);
+				NewOrderDialog nod = new NewOrderDialog();
+				nod.setVisible(true);
 			}
 			
 		});
-
 	}
 }

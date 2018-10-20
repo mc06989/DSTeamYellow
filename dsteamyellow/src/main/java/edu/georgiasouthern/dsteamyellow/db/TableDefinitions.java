@@ -3,7 +3,7 @@ package edu.georgiasouthern.dsteamyellow.db;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
-public class NorthwindTableDefinitions {
+public class TableDefinitions {
 	
 	@DatabaseTable(tableName="categories")
 	static class Category{
@@ -413,5 +413,91 @@ public class NorthwindTableDefinitions {
 		public EmployeeView() {
 			
 		}
+	}
+	
+	public static class Product{
+		public Product() {
+			
+		}
+		@DatabaseField(id=true)
+		private int ProductID;
+		@DatabaseField(canBeNull=false)
+		private String ProductName;
+		@DatabaseField(canBeNull=true)
+		private int SupplierID;
+		@DatabaseField(canBeNull=true)
+		private int CategoryID;
+		@DatabaseField(canBeNull=true)
+		private String QuantityPerUnit;
+		@DatabaseField(canBeNull=true)
+		private float UnitPrice;
+		public int getProductID() {
+			return ProductID;
+		}
+		public void setProductID(int productID) {
+			ProductID = productID;
+		}
+		public String getProductName() {
+			return ProductName;
+		}
+		public void setProductName(String productName) {
+			ProductName = productName;
+		}
+		public int getSupplierID() {
+			return SupplierID;
+		}
+		public void setSupplierID(int supplierID) {
+			SupplierID = supplierID;
+		}
+		public int getCategoryID() {
+			return CategoryID;
+		}
+		public void setCategoryID(int categoryID) {
+			CategoryID = categoryID;
+		}
+		public String getQuantityPerUnit() {
+			return QuantityPerUnit;
+		}
+		public void setQuantityPerUnit(String quantityPerUnit) {
+			QuantityPerUnit = quantityPerUnit;
+		}
+		public float getUnitPrice() {
+			return UnitPrice;
+		}
+		public void setUnitPrice(float unitPrice) {
+			UnitPrice = unitPrice;
+		}
+		public short getUnitsInStock() {
+			return UnitsInStock;
+		}
+		public void setUnitsInStock(short unitsInStock) {
+			UnitsInStock = unitsInStock;
+		}
+		public short getUnitsOnOrder() {
+			return UnitsOnOrder;
+		}
+		public void setUnitsOnOrder(short unitsOnOrder) {
+			UnitsOnOrder = unitsOnOrder;
+		}
+		public short getReorderLevel() {
+			return ReorderLevel;
+		}
+		public void setReorderLevel(short reorderLevel) {
+			ReorderLevel = reorderLevel;
+		}
+		public boolean isDiscontinued() {
+			return Discontinued;
+		}
+		public void setDiscontinued(boolean discontinued) {
+			Discontinued = discontinued;
+		}
+		@DatabaseField(canBeNull=true)
+		private short UnitsInStock;
+		@DatabaseField(canBeNull=true)
+		private short UnitsOnOrder;
+		@DatabaseField(canBeNull=true)
+		private short ReorderLevel;
+		@DatabaseField(canBeNull=true)
+		private boolean Discontinued;
 	}
 }

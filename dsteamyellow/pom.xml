@@ -4,7 +4,7 @@
 
   <groupId>edu.georgiasouthern</groupId>
   <artifactId>dsteamyellow</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
 
   <name>dsteamyellow</name>
@@ -22,7 +22,7 @@
         <configuration>
           <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>edu.georgiasouthern.dsteamyellow.App</mainClass>
+                  <mainClass>edu.georgiasouthern.dsteamyellow.Launcher</mainClass>
                 </transformer>
               </transformers>
         </configuration>

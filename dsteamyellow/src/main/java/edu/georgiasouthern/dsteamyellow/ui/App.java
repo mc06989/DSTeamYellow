@@ -54,4 +54,7 @@ public class App {
 		
 	}
 
+	public void OnDispose() {
+		System.out.println("EXITING");
+	}
 }

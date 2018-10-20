@@ -9,7 +9,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.spring.DaoFactory;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import edu.georgiasouthern.dsteamyellow.db.NorthwindTableDefinitions.*;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.*;
 
 
 //Orders - Done
@@ -162,4 +162,38 @@ public class DBConnection {
 		
 		return e;
 	}
+	
+
+//	public void getProductsOnOrder(int oid) {
+//		List<Products> orders=null;
+//		List<Object[]> a = new ArrayList<>();
+//		try {
+//			QueryBuilder<EmployeeView, Integer> q = employeeViewDao.queryBuilder();
+//			orders = employeeViewDao.query(q.prepare());
+//			
+//			
+//			for (EmployeeView o : orders) {
+//				ArrayList<Object> b = new ArrayList<Object>();
+//				b.add(o.getEmployeeID());
+//				b.add(o.getEmployeeName());
+//				b.add(o.getTitle());
+//				b.add(o.getFullAddress());
+//				b.add(o.getHomePhone());
+//				b.add(o.getReportsTo());
+//				b.add(o.getReportsToID());
+//				
+//				a.add(b.toArray());
+//			}
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		Object[][] d = new Object[a.size()][];
+//		
+//		for(int i =0;i<a.size();i++) {
+//			d[i]=a.get(i);
+//		}
+//		return  (Object[][]) d;
+//	}
 }

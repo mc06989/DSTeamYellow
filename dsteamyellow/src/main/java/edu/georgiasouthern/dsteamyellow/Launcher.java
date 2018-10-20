@@ -5,7 +5,7 @@ import edu.georgiasouthern.dsteamyellow.ui.App;
 import java.awt.EventQueue;
 
 
-public class NorthwindLauncher {
+public class Launcher {
 	
 	public static void main(String[] args) {
 		DBConnection dbc = DBConnection.getInstance();
