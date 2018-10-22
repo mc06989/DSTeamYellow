@@ -12,11 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.JTextPane;
 
 public class EmployeePanel extends JPanel {
 	/**
@@ -47,9 +42,7 @@ public class EmployeePanel extends JPanel {
 		add(scrollPane);
 
 		table = new JTable(data, columnnames){
-			  /**
-			 * 
-			 */
+
 			private static final long serialVersionUID = -28468731866341660L;
 
 			@Override

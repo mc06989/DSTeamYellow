@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.spring.DaoFactory;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -22,7 +23,8 @@ public class DBConnection {
 	public static volatile Dao<Employee, Integer> employeeDao;
 	public static volatile Dao<OrderDetailsView, Integer> orderDetailViewDao;
 	public static volatile Dao<EmployeeView, Integer> employeeViewDao;
-	
+	public static volatile Dao<Product, Integer> productDao;
+	ConnectionSource connectionSource;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
 			sdbconnection = new DBConnection();
@@ -33,7 +35,6 @@ public class DBConnection {
 	
 	private DBConnection() {
 		String databaseUrl = "jdbc:sqlserver://dbyellowteam.database.windows.net:1433;database=dbyellowteam;user=dbyellow@dbyellowteam;password=Dbyell0wteam;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-		ConnectionSource connectionSource;
 		try {
 			connectionSource = new JdbcConnectionSource(databaseUrl);
 			new DaoFactory();
@@ -41,9 +42,19 @@ public class DBConnection {
 			orderDetailViewDao = DaoFactory.createDao(connectionSource, OrderDetailsView.class);
 			employeeViewDao = DaoFactory.createDao(connectionSource, EmployeeView.class);
 			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
+			productDao = DaoFactory.createDao(connectionSource, Product.class);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+	}
+	
+	public void closeConnection() {
+		try {
+			connectionSource.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -164,36 +175,47 @@ public class DBConnection {
 	}
 	
 
-//	public void getProductsOnOrder(int oid) {
-//		List<Products> orders=null;
-//		List<Object[]> a = new ArrayList<>();
-//		try {
-//			QueryBuilder<EmployeeView, Integer> q = employeeViewDao.queryBuilder();
-//			orders = employeeViewDao.query(q.prepare());
-//			
-//			
-//			for (EmployeeView o : orders) {
-//				ArrayList<Object> b = new ArrayList<Object>();
-//				b.add(o.getEmployeeID());
-//				b.add(o.getEmployeeName());
-//				b.add(o.getTitle());
-//				b.add(o.getFullAddress());
-//				b.add(o.getHomePhone());
-//				b.add(o.getReportsTo());
-//				b.add(o.getReportsToID());
-//				
-//				a.add(b.toArray());
-//			}
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		Object[][] d = new Object[a.size()][];
-//		
-//		for(int i =0;i<a.size();i++) {
-//			d[i]=a.get(i);
-//		}
-//		return  (Object[][]) d;
-//	}
+	public Object[][] getProductsOnOrder(int oid) {
+		List<Product> orders= new ArrayList<Product>();
+		List<Object[]> a = new ArrayList<>();
+		try {
+			
+			GenericRawResults<String[]> aa = productDao.queryRaw("select * from OrderDetails where Orderid="+oid);
+			ArrayList<Integer> productIDs = new ArrayList<Integer>();
+			for (String[] aaa : aa) {
+				productIDs.add(Integer.parseInt(aaa[1]));
+			}
+			QueryBuilder<Product, Integer> q = productDao.queryBuilder();
+
+			for (Integer pro : productIDs) {
+				orders.add(productDao.queryForId(pro));
+			}
+			
+			
+			for (Product o : orders) {
+				ArrayList<Object> b = new ArrayList<Object>();
+				b.add(o.getProductID());
+				b.add(o.getProductName());
+				b.add(o.getSupplierID());
+				b.add(o.getCategoryID());
+				b.add(o.getQuantityPerUnit());
+				b.add(o.getUnitPrice());
+				b.add(o.getUnitsInStock());
+				b.add(o.getUnitsOnOrder());
+				b.add(o.getReorderLevel());
+				b.add(o.isDiscontinued());
+				a.add(b.toArray());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Object[][] d = new Object[a.size()][];
+		
+		for(int i =0;i<a.size();i++) {
+			d[i]=a.get(i);
+		}
+		return  (Object[][]) d;
+	}
 }

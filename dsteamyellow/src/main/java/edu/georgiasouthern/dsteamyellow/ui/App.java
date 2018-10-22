@@ -1,11 +1,16 @@
 package edu.georgiasouthern.dsteamyellow.ui;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import edu.georgiasouthern.dsteamyellow.Launcher;
+
 import javax.swing.LookAndFeel;
 import java.awt.BorderLayout;
 
@@ -52,9 +57,13 @@ public class App {
 		EmployeePanel employeePanel = new EmployeePanel();
 		tabbedPane.addTab("Employees", null, employeePanel, null);
 		
-	}
-
-	public void OnDispose() {
-		System.out.println("EXITING");
+		frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                Launcher.OnClose();
+            }
+        });
 	}
 }

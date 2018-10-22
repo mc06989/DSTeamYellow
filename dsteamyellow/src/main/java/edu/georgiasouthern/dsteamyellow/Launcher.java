@@ -6,7 +6,6 @@ import java.awt.EventQueue;
 
 
 public class Launcher {
-	
 	public static void main(String[] args) {
 		DBConnection dbc = DBConnection.getInstance();
 		
@@ -20,6 +19,10 @@ public class Launcher {
 				}
 			}
 		});
+	}
+	
+	public static void OnClose() {
+		DBConnection.getInstance().closeConnection();
 	}
 
 }

@@ -57,8 +57,18 @@ public class OrderDetailFrame extends JFrame {
 		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
-		Object[][] data = DBConnection.getInstance().getOrderViewList();
-		String[] columnnames = {"EmployeeID","EmployeeID","EmployeeID","EmployeeID","EmployeeID","EmployeeID","EmployeeID"};
+		Object[][] data = DBConnection.getInstance().getProductsOnOrder(oid);
+		String[] columnnames = {"ProductID",
+				"ProductName",
+				"SupplierID",
+				"CategoryID",
+				"QuantityPerUnit",
+				"UnitPrice",
+				"UnitsInStock",
+				"UnitsOnOrder",
+				"ReorderLevel",
+				"Discontinued"
+				};
 		JScrollPane scrollPane = new JScrollPane();
 		sl_contentPane.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, contentPane);
 		contentPane.add(scrollPane);
@@ -110,19 +120,19 @@ public class OrderDetailFrame extends JFrame {
 		panel_1.add(lblAdress, "2, 8");
 		
 		JLabel lblAddressdata = new JLabel("AddressData");
+		lblAddressdata.setText(odv.getShipAddress());
 		panel_1.add(lblAddressdata, "2, 10, 3, 1");
 		
 		JLabel lblPostal = new JLabel("Postal:");
 		panel_1.add(lblPostal, "2, 12");
 		
 		JLabel lblPostaldata = new JLabel("PostalData");
+		lblPostaldata.setText(odv.getShipPostal());
 		panel_1.add(lblPostaldata, "4, 12");
 		
 		JLabel lblCity = new JLabel("City");
 		panel_1.add(lblCity, "2, 14");
 		
-		JLabel lblCitydata = new JLabel("CityData");
-		panel_1.add(lblCitydata, "4, 14");
 		
 		JPanel panel = new JPanel();
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, scrollPane, -6, SpringLayout.NORTH, panel);

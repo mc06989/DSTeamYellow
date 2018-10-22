@@ -415,6 +415,7 @@ public class TableDefinitions {
 		}
 	}
 	
+	@DatabaseTable(tableName="Products")
 	public static class Product{
 		public Product() {
 			
