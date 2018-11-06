@@ -3,6 +3,7 @@ package edu.georgiasouthern.dsteamyellow.db;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
+//TODO: Implement Foreign key support for all tables and views
 public class TableDefinitions {
 	
 	@DatabaseTable(tableName="categories")
@@ -620,5 +621,386 @@ public class TableDefinitions {
 		private short ReorderLevel;
 		@DatabaseField(canBeNull=true)
 		private boolean Discontinued;
+	}
+
+	@DatabaseTable(tableName="Orders")
+	public static class Order{
+		
+		private int OrderID;
+		@DatabaseField(foreign=true, foreignAutoRefresh=true)
+		private Customer CustomerID;
+		@DatabaseField(foreign=true, foreignAutoRefresh=true)
+		private Employee EmployeeID;
+		@DatabaseField(canBeNull=true)
+		private Date OrderDate;
+		@DatabaseField(canBeNull=true)
+		private Date RequiredDate;
+		@DatabaseField(canBeNull=true)
+		private Date ShippedDate;
+		@DatabaseField(foreign=true)
+		private Shipper ShipVia;
+		@DatabaseField(canBeNull=true)
+		private float Freight;
+		@DatabaseField(canBeNull=true)
+		private String ShipName;
+		@DatabaseField(canBeNull=true)
+		private String ShipAddress;
+		@DatabaseField(canBeNull=true)
+		private String ShipCity;
+		@DatabaseField(canBeNull=true)
+		private String ShipRegion;
+		@DatabaseField(canBeNull=true)
+		private String ShipPostalCode;
+		@DatabaseField(canBeNull=true)
+		private String ShipCountry;
+		
+		public Order() {
+			
+		}
+
+		public int getOrderID() {
+			return OrderID;
+		}
+
+		public void setOrderID(int orderID) {
+			OrderID = orderID;
+		}
+
+		public Customer getCustomerID() {
+			return CustomerID;
+		}
+
+		public void setCustomerID(Customer customerID) {
+			CustomerID = customerID;
+		}
+
+		public Employee getEmployeeID() {
+			return EmployeeID;
+		}
+
+		public void setEmployeeID(Employee employeeID) {
+			EmployeeID = employeeID;
+		}
+
+		public Date getOrderDate() {
+			return OrderDate;
+		}
+
+		public void setOrderDate(Date orderDate) {
+			OrderDate = orderDate;
+		}
+
+		public Date getRequiredDate() {
+			return RequiredDate;
+		}
+
+		public void setRequiredDate(Date requiredDate) {
+			RequiredDate = requiredDate;
+		}
+
+		public Date getShippedDate() {
+			return ShippedDate;
+		}
+
+		public void setShippedDate(Date shippedDate) {
+			ShippedDate = shippedDate;
+		}
+
+		public Shipper getShipVia() {
+			return ShipVia;
+		}
+
+		public void setShipVia(Shipper shipVia) {
+			ShipVia = shipVia;
+		}
+
+		public float getFreight() {
+			return Freight;
+		}
+
+		public void setFreight(float freight) {
+			Freight = freight;
+		}
+
+		public String getShipName() {
+			return ShipName;
+		}
+
+		public void setShipName(String shipName) {
+			ShipName = shipName;
+		}
+
+		public String getShipAddress() {
+			return ShipAddress;
+		}
+
+		public void setShipAddress(String shipAddress) {
+			ShipAddress = shipAddress;
+		}
+
+		public String getShipCity() {
+			return ShipCity;
+		}
+
+		public void setShipCity(String shipCity) {
+			ShipCity = shipCity;
+		}
+
+		public String getShipRegion() {
+			return ShipRegion;
+		}
+
+		public void setShipRegion(String shipRegion) {
+			ShipRegion = shipRegion;
+		}
+
+		public String getShipPostalCode() {
+			return ShipPostalCode;
+		}
+
+		public void setShipPostalCode(String shipPostalCode) {
+			ShipPostalCode = shipPostalCode;
+		}
+
+		public String getShipCountry() {
+			return ShipCountry;
+		}
+
+		public void setShipCountry(String shipCountry) {
+			ShipCountry = shipCountry;
+		}
+		
+		
+	}
+
+	@DatabaseTable(tableName="Shippers")
+	public static class Shipper{
+		
+		@DatabaseField(id=true)
+		private int ShipperID;
+		@DatabaseField(canBeNull=false)
+		private String CompanyName;
+		@DatabaseField(canBeNull=true)
+		private String Phone;
+		
+		public Shipper() {
+			
+		}
+
+		public int getShipperID() {
+			return ShipperID;
+		}
+
+		public void setShipperID(int shipperID) {
+			ShipperID = shipperID;
+		}
+
+		public String getCompanyName() {
+			return CompanyName;
+		}
+
+		public void setCompanyName(String companyName) {
+			CompanyName = companyName;
+		}
+
+		public String getPhone() {
+			return Phone;
+		}
+
+		public void setPhone(String phone) {
+			Phone = phone;
+		}
+		
+		
+	}
+	
+	@DatabaseTable(tableName="OrderDetails")
+	public static class OrderDetail{
+		@DatabaseField(id=true, foreign=true, foreignAutoRefresh=true)
+		private Order OrderID;
+		@DatabaseField(id=true, foreign=true, foreignAutoRefresh=true)
+		private Product ProductID;
+		@DatabaseField(canBeNull=false)
+		private float UnitPrice;
+		@DatabaseField(canBeNull=false)
+		private short Quantity;
+		@DatabaseField(canBeNull=false)
+		private float Discount;
+		
+		public OrderDetail() {
+			
+		}
+
+		public Order getOrderID() {
+			return OrderID;
+		}
+
+		public void setOrderID(Order orderID) {
+			OrderID = orderID;
+		}
+
+		public Product getProductID() {
+			return ProductID;
+		}
+
+		public void setProductID(Product productID) {
+			ProductID = productID;
+		}
+
+		public float getUnitPrice() {
+			return UnitPrice;
+		}
+
+		public void setUnitPrice(float unitPrice) {
+			UnitPrice = unitPrice;
+		}
+
+		public short getQuantity() {
+			return Quantity;
+		}
+
+		public void setQuantity(short quantity) {
+			Quantity = quantity;
+		}
+
+		public float getDiscount() {
+			return Discount;
+		}
+
+		public void setDiscount(float discount) {
+			Discount = discount;
+		}
+		
+		
+	}
+	
+	@DatabaseTable(tableName="Suppliers")
+	public static class Supplier{
+		@DatabaseField(id=true)
+		private int SupplierID;
+		@DatabaseField(canBeNull=false)
+		private String CompanyName;
+		@DatabaseField(canBeNull=true)
+		private String ContactName;
+		@DatabaseField(canBeNull=true)
+		private String ContactTitle;
+		@DatabaseField(canBeNull=true)
+		private String Address;
+		@DatabaseField(canBeNull=true)
+		private String City;
+		@DatabaseField(canBeNull=true)
+		private String Region;
+		@DatabaseField(canBeNull=true)
+		private String PostalCode;
+		@DatabaseField(canBeNull=true)
+		private String Country;
+		@DatabaseField(canBeNull=true)
+		private String Phone;
+		@DatabaseField(canBeNull=true)
+		private String Fax;
+		@DatabaseField(canBeNull=true)
+		private String HomePage;
+		
+		public Supplier() {
+			
+		}
+
+		public int getSupplierID() {
+			return SupplierID;
+		}
+
+		public void setSupplierID(int supplierID) {
+			SupplierID = supplierID;
+		}
+
+		public String getCompanyName() {
+			return CompanyName;
+		}
+
+		public void setCompanyName(String companyName) {
+			CompanyName = companyName;
+		}
+
+		public String getContactName() {
+			return ContactName;
+		}
+
+		public void setContactName(String contactName) {
+			ContactName = contactName;
+		}
+
+		public String getContactTitle() {
+			return ContactTitle;
+		}
+
+		public void setContactTitle(String contactTitle) {
+			ContactTitle = contactTitle;
+		}
+
+		public String getAddress() {
+			return Address;
+		}
+
+		public void setAddress(String address) {
+			Address = address;
+		}
+
+		public String getCity() {
+			return City;
+		}
+
+		public void setCity(String city) {
+			City = city;
+		}
+
+		public String getRegion() {
+			return Region;
+		}
+
+		public void setRegion(String region) {
+			Region = region;
+		}
+
+		public String getPostalCode() {
+			return PostalCode;
+		}
+
+		public void setPostalCode(String postalCode) {
+			PostalCode = postalCode;
+		}
+
+		public String getCountry() {
+			return Country;
+		}
+
+		public void setCountry(String country) {
+			Country = country;
+		}
+
+		public String getPhone() {
+			return Phone;
+		}
+
+		public void setPhone(String phone) {
+			Phone = phone;
+		}
+
+		public String getFax() {
+			return Fax;
+		}
+
+		public void setFax(String fax) {
+			Fax = fax;
+		}
+
+		public String getHomePage() {
+			return HomePage;
+		}
+
+		public void setHomePage(String homePage) {
+			HomePage = homePage;
+		}
+		
+		
 	}
 }
