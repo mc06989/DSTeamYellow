@@ -29,6 +29,8 @@ public class EmployeeDetailPanel extends JPanel {
 	JTextPane textPane;
 	private JLabel lblToCData;
 	private JLabel lblAddressData;
+	private JLabel lblDepartment;
+	private JLabel lblDepartmentData;
 	public EmployeeDetailPanel() {
 
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -46,6 +48,8 @@ public class EmployeeDetailPanel extends JPanel {
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -129,6 +133,12 @@ public class EmployeeDetailPanel extends JPanel {
 		
 		add(lblExtensionData, "4, 14");
 		add(lblCountry, "8, 14");
+		
+		lblDepartment = new JLabel("Department");
+		add(lblDepartment, "2, 16");
+		
+		lblDepartmentData = new JLabel("DepartmentInfo");
+		add(lblDepartmentData, "4, 16");
 		
 	}
 	

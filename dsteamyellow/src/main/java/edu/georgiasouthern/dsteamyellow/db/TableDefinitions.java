@@ -6,7 +6,7 @@ import java.util.Date;
 public class TableDefinitions {
 	
 	@DatabaseTable(tableName="categories")
-	static class Category{
+	public static class Category{
 		@DatabaseField(id=true)
 		private int CategoryID;
 		@DatabaseField(canBeNull=false)
@@ -36,6 +36,126 @@ public class TableDefinitions {
 		public void setDescription(String description) {
 			Description = description;
 		}
+		
+	}
+	
+	@DatabaseTable(tableName="Customers")
+	public static class Customer{
+		@DatabaseField(id=true)
+		private int CustomerID;
+		@DatabaseField(canBeNull=false)
+		private String CompanyName;
+		@DatabaseField(canBeNull=true)
+		private String ContactName;
+		@DatabaseField(canBeNull=true)
+		private String ContactTitle;
+		@DatabaseField(canBeNull=true)
+		private String Address;
+		@DatabaseField(canBeNull=true)
+		private String City;
+		@DatabaseField(canBeNull=true)
+		private String Region;
+		@DatabaseField(canBeNull=true)
+		private String PostalCode;
+		@DatabaseField(canBeNull=true)
+		private String Country;
+		@DatabaseField(canBeNull=true)
+		private String Phone;
+		@DatabaseField(canBeNull=true)
+		private String Fax;
+		
+		public Customer() {
+			
+		}
+
+		public int getCustomerID() {
+			return CustomerID;
+		}
+
+		public void setCustomerID(int customerID) {
+			CustomerID = customerID;
+		}
+
+		public String getCompanyName() {
+			return CompanyName;
+		}
+
+		public void setCompanyName(String companyName) {
+			CompanyName = companyName;
+		}
+
+		public String getContactName() {
+			return ContactName;
+		}
+
+		public void setContactName(String contactName) {
+			ContactName = contactName;
+		}
+
+		public String getContactTitle() {
+			return ContactTitle;
+		}
+
+		public void setContactTitle(String contactTitle) {
+			ContactTitle = contactTitle;
+		}
+
+		public String getAddress() {
+			return Address;
+		}
+
+		public void setAddress(String address) {
+			Address = address;
+		}
+
+		public String getCity() {
+			return City;
+		}
+
+		public void setCity(String city) {
+			City = city;
+		}
+
+		public String getRegion() {
+			return Region;
+		}
+
+		public void setRegion(String region) {
+			Region = region;
+		}
+
+		public String getPostalCode() {
+			return PostalCode;
+		}
+
+		public void setPostalCode(String postalCode) {
+			PostalCode = postalCode;
+		}
+
+		public String getCountry() {
+			return Country;
+		}
+
+		public void setCountry(String country) {
+			Country = country;
+		}
+
+		public String getPhone() {
+			return Phone;
+		}
+
+		public void setPhone(String phone) {
+			Phone = phone;
+		}
+
+		public String getFax() {
+			return Fax;
+		}
+
+		public void setFax(String fax) {
+			Fax = fax;
+		}
+		
 		
 	}
 	
