@@ -24,6 +24,7 @@ public class DBConnection {
 	public static volatile Dao<OrderDetailsView, Integer> orderDetailViewDao;
 	public static volatile Dao<EmployeeView, Integer> employeeViewDao;
 	public static volatile Dao<Product, Integer> productDao;
+	public static volatile Dao<Order, Integer> orderDao;
 	ConnectionSource connectionSource;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
