@@ -44,8 +44,7 @@ public class DBConnection {
 			employeeViewDao = DaoFactory.createDao(connectionSource, EmployeeView.class);
 			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
 			productDao = DaoFactory.createDao(connectionSource, Product.class);
-			orderDetailDao = DaoFactory.createDao(connectionSource, OrderDetail.class);
-			shipperDao = DaoFactory.createDao(connectionSource, Shipper.class);
+			orderDao = DaoFactory.createDao(connectionSource, Order.class);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -176,12 +175,13 @@ public class DBConnection {
 		
 		return e;
 	}
-
+	
 
 	public Object[][] getProductsOnOrder(int oid) {
 		List<Product> orders= new ArrayList<Product>();
 		List<Object[]> a = new ArrayList<>();
 		try {
+			
 			GenericRawResults<String[]> aa = productDao.queryRaw("select * from OrderDetails where Orderid="+oid);
 			ArrayList<Integer> productIDs = new ArrayList<Integer>();
 			for (String[] aaa : aa) {
@@ -219,35 +219,5 @@ public class DBConnection {
 			d[i]=a.get(i);
 		}
 		return  (Object[][]) d;
-	}
-
-	public Order getOrder(int oid) {
-		Order o = null;
-		try {
-			o= orderDao.queryForId(oid);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return o;
-	}
-	
-	public Shipper getShipper(int sid) {
-		Shipper s = null;
-		try {
-			s = shipperDao.queryForId(sid);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return s;
-	}
-	
-	public Employee getEmployee(int eid) {
-		Employee e = null;
-		try {
-			e = employeeDao.queryForId(eid);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return e;
 	}
 }
