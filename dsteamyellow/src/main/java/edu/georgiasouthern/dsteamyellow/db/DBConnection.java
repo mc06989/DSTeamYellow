@@ -12,10 +12,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.*;
 
-
-//Orders - Done
-//OrderDetails
-//Employees
 public class DBConnection {
 	
 	private static volatile DBConnection sdbconnection;
