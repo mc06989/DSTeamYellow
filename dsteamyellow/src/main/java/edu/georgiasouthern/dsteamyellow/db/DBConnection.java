@@ -21,6 +21,8 @@ public class DBConnection {
 	public static volatile Dao<EmployeeView, Integer> employeeViewDao;
 	public static volatile Dao<Product, Integer> productDao;
 	public static volatile Dao<Order, Integer> orderDao;
+	public static volatile Dao<OrderDetail, Integer> orderDetailDao;
+	public static volatile Dao<Shipper, Integer> shipperDao;
 	ConnectionSource connectionSource;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
@@ -32,6 +34,7 @@ public class DBConnection {
 	
 	private DBConnection() {
 		String databaseUrl = "jdbc:sqlserver://dbyellowteam.database.windows.net:1433;database=dbyellowteam;user=dbyellow@dbyellowteam;password=Dbyell0wteam;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+		//databaseUrl = "jdbc:sqlserver://dsteamyellow.database.windows.net:1433;database=dsteamyellow;user=dsteamyellow@dsteamyellow;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 		try {
 			connectionSource = new JdbcConnectionSource(databaseUrl);
 			new DaoFactory();
@@ -40,6 +43,8 @@ public class DBConnection {
 			employeeViewDao = DaoFactory.createDao(connectionSource, EmployeeView.class);
 			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
 			productDao = DaoFactory.createDao(connectionSource, Product.class);
+			orderDetailDao = DaoFactory.createDao(connectionSource, OrderDetail.class);
+			shipperDao = DaoFactory.createDao(connectionSource, Shipper.class);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -170,13 +175,12 @@ public class DBConnection {
 		
 		return e;
 	}
-	
+
 
 	public Object[][] getProductsOnOrder(int oid) {
 		List<Product> orders= new ArrayList<Product>();
 		List<Object[]> a = new ArrayList<>();
 		try {
-			
 			GenericRawResults<String[]> aa = productDao.queryRaw("select * from OrderDetails where Orderid="+oid);
 			ArrayList<Integer> productIDs = new ArrayList<Integer>();
 			for (String[] aaa : aa) {
@@ -214,5 +218,35 @@ public class DBConnection {
 			d[i]=a.get(i);
 		}
 		return  (Object[][]) d;
+	}
+
+	public Order getOrder(int oid) {
+		Order o = null;
+		try {
+			o= orderDao.queryForId(oid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return o;
+	}
+	
+	public Shipper getShipper(int sid) {
+		Shipper s = null;
+		try {
+			s = shipperDao.queryForId(sid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+	
+	public Employee getEmployee(int eid) {
+		Employee e = null;
+		try {
+			e = employeeDao.queryForId(eid);
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return e;
 	}
 }

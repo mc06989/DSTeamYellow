@@ -816,10 +816,10 @@ public class TableDefinitions {
 	
 	@DatabaseTable(tableName="OrderDetails")
 	public static class OrderDetail{
-		@DatabaseField(id=true, foreign=true, foreignAutoRefresh=true)
-		private Order OrderID;
-		@DatabaseField(id=true, foreign=true, foreignAutoRefresh=true)
-		private Product ProductID;
+		@DatabaseField(id=true)
+		private int OrderID;
+		@DatabaseField()
+		private int ProductID;
 		@DatabaseField(canBeNull=false)
 		private float UnitPrice;
 		@DatabaseField(canBeNull=false)
@@ -831,19 +831,19 @@ public class TableDefinitions {
 			
 		}
 
-		public Order getOrderID() {
+		public int getOrderID() {
 			return OrderID;
 		}
 
-		public void setOrderID(Order orderID) {
+		public void setOrderID(int orderID) {
 			OrderID = orderID;
 		}
 
-		public Product getProductID() {
+		public int getProductID() {
 			return ProductID;
 		}
 
-		public void setProductID(Product productID) {
+		public void setProductID(int productID) {
 			ProductID = productID;
 		}
 
