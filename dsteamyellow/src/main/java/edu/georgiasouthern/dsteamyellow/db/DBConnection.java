@@ -12,6 +12,10 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.*;
 
+
+//Orders - Done
+//OrderDetails
+//Employees
 public class DBConnection {
 	
 	private static volatile DBConnection sdbconnection;
@@ -21,8 +25,6 @@ public class DBConnection {
 	public static volatile Dao<EmployeeView, Integer> employeeViewDao;
 	public static volatile Dao<Product, Integer> productDao;
 	public static volatile Dao<Order, Integer> orderDao;
-	public static volatile Dao<OrderDetail, Integer> orderDetailDao;
-	public static volatile Dao<Shipper, Integer> shipperDao;
 	ConnectionSource connectionSource;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
@@ -34,7 +36,6 @@ public class DBConnection {
 	
 	private DBConnection() {
 		String databaseUrl = "jdbc:sqlserver://dbyellowteam.database.windows.net:1433;database=dbyellowteam;user=dbyellow@dbyellowteam;password=Dbyell0wteam;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-		//databaseUrl = "jdbc:sqlserver://dsteamyellow.database.windows.net:1433;database=dsteamyellow;user=dsteamyellow@dsteamyellow;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 		try {
 			connectionSource = new JdbcConnectionSource(databaseUrl);
 			new DaoFactory();
