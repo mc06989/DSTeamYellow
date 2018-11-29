@@ -1,12 +1,16 @@
 package edu.georgiasouthern.dsteamyellow.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
+import java.util.List;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
@@ -15,14 +19,18 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import edu.georgiasouthern.dsteamyellow.db.DBConnection;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.Employee;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.Order;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.OrderDetail;
 import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.OrderDetailsView;
+import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.Product;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
-public class OrderDetailFrame extends JFrame {
+public class OrderDetailPanel extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -34,7 +42,7 @@ public class OrderDetailFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OrderDetailFrame frame = new OrderDetailFrame(0);
+					OrderDetailPanel frame = new OrderDetailPanel(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,18 +54,32 @@ public class OrderDetailFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OrderDetailFrame(int oid) {
-		
-		OrderDetailsView odv = DBConnection.getInstance().getOrderDetails(oid);
-		setTitle("Order "+oid);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	public OrderDetailPanel(int oid) {
+		super("Order Details", true, true,true,true);
+		//OrderDetailsView odv = DBConnection.getInstance().getOrderDetailsView(oid);
+		System.out.println(oid);
+		Order odv = DBConnection.getInstance().getOrder(oid);
 		setBounds(100, 100, 678, 474);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		SpringLayout sl_contentPane = new SpringLayout();
+		setContentPane(contentPane);
 		contentPane.setLayout(sl_contentPane);
-		Object[][] data = DBConnection.getInstance().getProductsOnOrder(oid);
+		List<Product> products = DBConnection.getInstance().getProductsOnOrder(oid);
+		List<OrderDetail> orderDetails = DBConnection.getInstance().getOrderDetails(oid);
+		int sum = 0;
+		for (OrderDetail o: orderDetails) {
+			sum+= o.getQuantity() * (o.getUnitPrice()-o.getDiscount());
+		}
+		
+		//Order order = DBConnection.getInstance().getOrder(oid);
+		System.out.println(odv.getOrderID());
+		Employee employee = odv.getEmployeeID();
+		
+		
+		
+		
+		Object[][] data = DBConnection.getInstance().getProductsOnOrderTable(oid);
 		String[] columnnames = {"ProductID",
 				"ProductName",
 				"SupplierID",
@@ -78,6 +100,7 @@ public class OrderDetailFrame extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JPanel panel_1 = new JPanel();
+		sl_contentPane.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.EAST, panel_1);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, panel_1, 5, SpringLayout.NORTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, panel_1, 10, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel_1, -10, SpringLayout.SOUTH, contentPane);
@@ -107,36 +130,36 @@ public class OrderDetailFrame extends JFrame {
 		panel_1.add(lblNewLabel_3, "2, 2");
 		
 		JLabel lblCustomername = new JLabel("CustomerName");
-		lblCustomername = new JLabel(odv.ContactName);
+		lblCustomername = new JLabel(odv.getShipName());
 		panel_1.add(lblCustomername, "4, 2");
 		JLabel lblNewLabel_4 = new JLabel("192.10");
 		
 		JLabel lblTotalPrice = new JLabel("Total Price");
 		panel_1.add(lblTotalPrice, "2, 6");
-		lblNewLabel_4 = new JLabel("priceData");
-		panel_1.add(lblNewLabel_4, "4, 6");
+		lblNewLabel_4 = new JLabel(Integer.toString(sum));
+		panel_1.add(lblNewLabel_4, "4, 6, left, default");
 		
 		JLabel lblAdress = new JLabel("Adress:");
 		panel_1.add(lblAdress, "2, 8");
 		
-		JLabel lblAddressdata = new JLabel("AddressData");
+		JLabel lblAddressdata = new JLabel(odv.getShipAddress());
 		lblAddressdata.setText(odv.getShipAddress());
 		panel_1.add(lblAddressdata, "2, 10, 3, 1");
 		
 		JLabel lblPostal = new JLabel("Postal:");
 		panel_1.add(lblPostal, "2, 12");
 		
-		JLabel lblPostaldata = new JLabel("PostalData");
-		lblPostaldata.setText(odv.getShipPostal());
+		JLabel lblPostaldata = new JLabel(odv.getShipPostalCode());
+		lblPostaldata.setText(odv.getShipPostalCode());
 		panel_1.add(lblPostaldata, "4, 12");
 		
-		JLabel lblCity = new JLabel("City");
+		JLabel lblCity = new JLabel();
 		panel_1.add(lblCity, "2, 14");
 		
 		
 		JPanel panel = new JPanel();
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, scrollPane, -6, SpringLayout.NORTH, panel);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, panel, 302, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, scrollPane, -50, SpringLayout.SOUTH, panel);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, panel, 10, SpringLayout.SOUTH, scrollPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, panel, 195, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, panel, -10, SpringLayout.SOUTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, panel, -5, SpringLayout.EAST, contentPane);
@@ -154,5 +177,6 @@ public class OrderDetailFrame extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblProducts, 20, SpringLayout.EAST, panel_1);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblProducts, 0, SpringLayout.NORTH, panel_1);
 		contentPane.add(lblProducts);
+		
 	}
 }

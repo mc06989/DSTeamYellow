@@ -24,7 +24,7 @@ public class EmployeePanel extends JPanel {
 	
 	public EmployeePanel() {
 		
-		Object[][] data = DBConnection.getInstance().getEmployeeViewList();
+		//Object[][] data = DBConnection.getInstance().getEmployeeViewList();
 		String[] columnnames = {"ID",
 								"Employee Name",
 								"Title",
@@ -41,7 +41,7 @@ public class EmployeePanel extends JPanel {
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, this);
 		add(scrollPane);
 
-		table = new JTable(data, columnnames){
+		/*table = new JTable(data, columnnames){
 
 			private static final long serialVersionUID = -28468731866341660L;
 
@@ -49,11 +49,11 @@ public class EmployeePanel extends JPanel {
 		      public boolean isCellEditable(int row, int column){  
 		          return false;  
 		      }
-		};
-//		table = new JTable();
+		};*/
+		table = new JTable();
 		scrollPane.setViewportView(table);
 
-		table.addMouseListener(new MouseAdapter() {
+		/*table.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent mouseEvent) {
 				JTable mytable = (JTable)mouseEvent.getSource();
 				Point point = mouseEvent.getPoint();
@@ -63,7 +63,7 @@ public class EmployeePanel extends JPanel {
 					employeeDetailPanel.setEmployee((int) mytable.getValueAt(row, 0));
 				}
 			}
-		});
+		});*/
 		
 		JLabel lblEmployees = new JLabel("Employees");
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, lblEmployees);

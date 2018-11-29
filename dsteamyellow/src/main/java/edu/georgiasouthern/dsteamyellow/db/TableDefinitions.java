@@ -43,7 +43,7 @@ public class TableDefinitions {
 	@DatabaseTable(tableName="Customers")
 	public static class Customer{
 		@DatabaseField(id=true)
-		private int CustomerID;
+		private String CustomerID;
 		@DatabaseField(canBeNull=false)
 		private String CompanyName;
 		@DatabaseField(canBeNull=true)
@@ -69,11 +69,11 @@ public class TableDefinitions {
 			
 		}
 
-		public int getCustomerID() {
+		public String getCustomerID() {
 			return CustomerID;
 		}
 
-		public void setCustomerID(int customerID) {
+		public void setCustomerID(String customerID) {
 			CustomerID = customerID;
 		}
 
@@ -221,8 +221,10 @@ public class TableDefinitions {
 		public String CustomerID;
 		@DatabaseField(canBeNull=true)
 		public String ContactName;
-		@DatabaseField(canBeNull=true)
-		public float TotalPrice;
+//		@DatabaseField(canBeNull=true)
+//		public float TotalPrice;
+		@DatabaseField(canBeNull=false)
+		public String ShipCity;
 		
 		public int getOrderID() {
 			return OrderID;
@@ -264,13 +266,13 @@ public class TableDefinitions {
 			ContactName = contactName;
 		}
 
-		public float getTotalPrice() {
-			return TotalPrice;
-		}
-
-		public void setTotalPrice(float totalPrice) {
-			TotalPrice = totalPrice;
-		}
+//		public float getTotalPrice() {
+//			return TotalPrice;
+//		}
+//
+//		public void setTotalPrice(float totalPrice) {
+//			TotalPrice = totalPrice;
+//		}
 
 		public OrderDetailsView() {
 			
@@ -279,7 +281,7 @@ public class TableDefinitions {
 	
 	@DatabaseTable(tableName="Employees")
 	public static class Employee{
-		@DatabaseField(id=true,canBeNull=false)
+		@DatabaseField(id=true,canBeNull=false, columnName="EmployeeID")
 		private int EmployeeID;
 		@DatabaseField(canBeNull=false)
 		private String LastName;
@@ -625,11 +627,11 @@ public class TableDefinitions {
 
 	@DatabaseTable(tableName="Orders")
 	public static class Order{
-		
-		private int OrderID;
-		@DatabaseField(foreign=true, foreignAutoRefresh=true)
+		@DatabaseField(id=true)
+		private Integer OrderID;
+		@DatabaseField(foreign=true, foreignAutoRefresh=true, columnName="CustomerID")
 		private Customer CustomerID;
-		@DatabaseField(foreign=true, foreignAutoRefresh=true)
+		@DatabaseField(foreign=true, foreignAutoRefresh=true, columnName="EmployeeID")
 		private Employee EmployeeID;
 		@DatabaseField(canBeNull=true)
 		private Date OrderDate;
@@ -637,7 +639,7 @@ public class TableDefinitions {
 		private Date RequiredDate;
 		@DatabaseField(canBeNull=true)
 		private Date ShippedDate;
-		@DatabaseField(foreign=true)
+		@DatabaseField(foreign=true, columnName="ShipVia")
 		private Shipper ShipVia;
 		@DatabaseField(canBeNull=true)
 		private float Freight;
@@ -814,7 +816,7 @@ public class TableDefinitions {
 		
 	}
 	
-	@DatabaseTable(tableName="OrderDetails")
+	@DatabaseTable(tableName="Order Details")
 	public static class OrderDetail{
 		@DatabaseField(id=true)
 		private int OrderID;
@@ -826,6 +828,8 @@ public class TableDefinitions {
 		private short Quantity;
 		@DatabaseField(canBeNull=false)
 		private float Discount;
+		
+		
 		
 		public OrderDetail() {
 			

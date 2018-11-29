@@ -1,8 +1,11 @@
 package edu.georgiasouthern.dsteamyellow.db;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -25,6 +28,7 @@ public class DBConnection {
 	public static volatile Dao<EmployeeView, Integer> employeeViewDao;
 	public static volatile Dao<Product, Integer> productDao;
 	public static volatile Dao<Order, Integer> orderDao;
+	public static volatile Dao<OrderDetail, Integer> orderDetailDao;
 	ConnectionSource connectionSource;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
@@ -36,13 +40,29 @@ public class DBConnection {
 	
 	private DBConnection() {
 		String databaseUrl = "jdbc:sqlserver://dbyellowteam.database.windows.net:1433;database=dbyellowteam;user=dbyellow@dbyellowteam;password=Dbyell0wteam;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+		databaseUrl = "jdbc:sqlserver://localhost:1433;database=Northwind;user=admin;password=password;encrypt=true;trustServerCertificate=true;loginTimeout=5;";
+		
+
 		try {
+			String driverName = "org.gjt.mm.sqlserver.Driver";
+			//Class.forName(driverName);
+			String serverName = "localhost";
+			String mydatabase = "Northwind";
+			String url = "jdbc:sqlserver://"+serverName+";database="+mydatabase;
+			
+			String username = "mjc3bb@gmail.com";
+			String password = "Retrac_13";
+			
+			//Connection connection = DriverManager.getConnection(url, username, password);
 			connectionSource = new JdbcConnectionSource(databaseUrl);
 			new DaoFactory();
+			orderDetailDao = DaoFactory.createDao(connectionSource, OrderDetail.class);
+			
 			orderViewDao = DaoFactory.createDao(connectionSource, OrderView.class);
 			orderDetailViewDao = DaoFactory.createDao(connectionSource, OrderDetailsView.class);
 			employeeViewDao = DaoFactory.createDao(connectionSource, EmployeeView.class);
 			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
+			
 			productDao = DaoFactory.createDao(connectionSource, Product.class);
 			orderDao = DaoFactory.createDao(connectionSource, Order.class);
 		} catch (SQLException e1) {
@@ -118,12 +138,12 @@ public class DBConnection {
 //		return  (Object[][]) d;
 //	}
 	
-	public OrderDetailsView getOrderDetails(int oid) {
+	public OrderDetailsView getOrderDetailsView(int oid) {
 		QueryBuilder<OrderDetailsView, Integer> q = orderDetailViewDao.queryBuilder();
 		
 		List<OrderDetailsView> odv = null;
 		try {
-			q.where().eq("OrderId", oid);
+			q.where().eq("OrderID", oid);
 			odv= orderDetailViewDao.query(q.prepare());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -132,13 +152,35 @@ public class DBConnection {
 		return odv.get(0);
 	}
 	
+	public Order getOrder(int oid) {
+		Order order = null;
+		try {
+			order = orderDao.queryForId(oid);
+			employeeDao.refresh(order.getEmployeeID());
+			return order;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return order;
+	}
+	
+	public List<OrderDetail> getOrderDetails(int oid){
+		List<OrderDetail> orderDetails = null;
+		try {
+			orderDetails = orderDetailDao.query(orderDetailDao.queryBuilder().where().eq("OrderID", oid).prepare());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return orderDetails;
+	}
+	
 	public Object[][] getEmployeeViewList(){
 		List<EmployeeView> orders=null;
 		List<Object[]> a = new ArrayList<>();
 		try {
 			QueryBuilder<EmployeeView, Integer> q = employeeViewDao.queryBuilder();
 			orders = employeeViewDao.query(q.prepare());
-			
 			
 			for (EmployeeView o : orders) {
 				ArrayList<Object> b = new ArrayList<Object>();
@@ -176,25 +218,38 @@ public class DBConnection {
 		return e;
 	}
 	
+	
+	public List<Product> getProductsOnOrder(int oid){
+		List<Product> products= new ArrayList<Product>();
+		List<OrderDetail> details;
+		try {
+			details = orderDetailDao.query(orderDetailDao.queryBuilder().where().eq("OrderID", oid).prepare());
+		
+			for (OrderDetail det : details) {
+				products.add(productDao.queryForId(det.getProductID()));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-	public Object[][] getProductsOnOrder(int oid) {
-		List<Product> orders= new ArrayList<Product>();
+
+		return products;
+	}
+
+	public Object[][] getProductsOnOrderTable(int oid) {
+		List<Product> products= new ArrayList<Product>();
 		List<Object[]> a = new ArrayList<>();
 		try {
 			
-			GenericRawResults<String[]> aa = productDao.queryRaw("select * from OrderDetails where Orderid="+oid);
-			ArrayList<Integer> productIDs = new ArrayList<Integer>();
-			for (String[] aaa : aa) {
-				productIDs.add(Integer.parseInt(aaa[1]));
-			}
-			QueryBuilder<Product, Integer> q = productDao.queryBuilder();
+			List<OrderDetail> details = orderDetailDao.query(orderDetailDao.queryBuilder().where().eq("OrderID", oid).prepare());
 
-			for (Integer pro : productIDs) {
-				orders.add(productDao.queryForId(pro));
+
+			for (OrderDetail det : details) {
+				products.add(productDao.queryForId(det.getProductID()));
 			}
 			
 			
-			for (Product o : orders) {
+			for (Product o : products) {
 				ArrayList<Object> b = new ArrayList<Object>();
 				b.add(o.getProductID());
 				b.add(o.getProductName());
