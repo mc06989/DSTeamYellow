@@ -25,6 +25,26 @@
                   <mainClass>edu.georgiasouthern.dsteamyellow.Launcher</mainClass>
                 </transformer>
               </transformers>
+              <filters>
+                    <filter>
+                        <!-- filter out signature files from signed dependencies, else repackaging fails with security ex -->
+                        <artifact>*:*</artifact>
+                        <includes>
+                        	<include>com/microsoft/**</include>
+                        	<include></include>
+                        	<include></include>
+                        	<include></include>
+                        	<include></include>
+                        	<include></include>
+        
+                        </includes>
+                        <excludes>
+                            <exclude>META-INF/*.SF</exclude>
+                            <exclude>META-INF/*.DSA</exclude>
+                            <exclude>META-INF/*.RSA</exclude>
+                        </excludes>
+                    </filter>
+                </filters>
         </configuration>
         <executions>
           <execution>
@@ -37,6 +57,8 @@
       </plugin>
 	</plugins>
 	</build>
+ 
+ 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>

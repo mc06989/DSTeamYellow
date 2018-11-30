@@ -18,17 +18,27 @@ import edu.georgiasouthern.dsteamyellow.db.DBConnection;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
-public class DesktopApp implements OrderPanel.OnOrderListener{
+import edu.georgiasouthern.dsteamyellow.ui.OrderDetailPanel;
+public class DesktopApp implements OrderPanel.OnOrderListener,OrderDetailPanel.OnOrderPanelRefreshListener{
 	
 	public static DesktopApp _desktopapp;
-	
+	private String urlString;
 	public static DesktopApp getDesktop() {
 		if(_desktopapp!=null) {
 			return _desktopapp;
 		}
 		else {
 			_desktopapp = new DesktopApp();
+			return _desktopapp;
+		}
+	}
+	
+	public static DesktopApp getDesktop(String urlString) {
+		if(_desktopapp!=null) {
+			return _desktopapp;
+		}
+		else {
+			_desktopapp = new DesktopApp(urlString);
 			return _desktopapp;
 		}
 	}
@@ -57,6 +67,12 @@ public class DesktopApp implements OrderPanel.OnOrderListener{
 	public DesktopApp() {
 		_desktopapp=this;
 		initialize();
+	}
+	
+	public DesktopApp(String urlString) {
+		_desktopapp=this;
+		initialize();
+		this.urlString = urlString;
 	}
 
 	/**
@@ -88,29 +104,31 @@ public class DesktopApp implements OrderPanel.OnOrderListener{
 		desktopPane.setDragMode(desktopPane.OUTLINE_DRAG_MODE);
 		
 		OrderPanel orderPanel = new OrderPanel();
-		orderPanel.setBounds(157, 175, 600, 600);
+		orderPanel.setBounds(10, 28, 600, 305);
 		desktopPane.add(orderPanel);
 		
 		System.err.println(orderPanel.getLocation());
-		
-		JMenuBar menuBar = new JMenuBar();
-		frame.getContentPane().add(menuBar, BorderLayout.NORTH);
-		
-		JMenu mnOpen = new JMenu("Open...");
-		mnOpen.setIcon(null);
-		menuBar.add(mnOpen);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Orders");
-		mnOpen.add(mntmNewMenuItem);
 		desktopPane.setVisible(true);
 		
 	}
 
-	@Override
 	public void orderDetail(OrderDetailPanel nof) {
 		nof.setBounds(462, 68, 468, 359);
 		nof.setVisible(true);
 		desktopPane.add(nof);
 		nof.toFront();
 	}
+
+	public void OrderPanelRefresh(int oid) {
+		orderDetail(new OrderDetailPanel(oid));
+		
+	}
+
+	public void orderRefresh() {
+		OrderPanel orderPanel = new OrderPanel();
+		orderPanel.setBounds(10, 28, 600, 305);
+		desktopPane.add(orderPanel);
+	}
+	
+
 }

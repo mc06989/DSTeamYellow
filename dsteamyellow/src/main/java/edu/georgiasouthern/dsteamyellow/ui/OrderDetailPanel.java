@@ -9,7 +9,10 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,6 +32,12 @@ import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
+import org.jdesktop.swingx.autocomplete.AutoCompleteComboBoxEditor;
+import javax.swing.ComboBoxEditor;
+import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import org.jdesktop.swingx.JXComboBox;
 
 public class OrderDetailPanel extends JInternalFrame {
 
@@ -54,11 +63,11 @@ public class OrderDetailPanel extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OrderDetailPanel(int oid) {
+	public OrderDetailPanel(final int oid) {
 		super("Order Details", true, true,true,true);
 		//OrderDetailsView odv = DBConnection.getInstance().getOrderDetailsView(oid);
 		System.out.println(oid);
-		Order odv = DBConnection.getInstance().getOrder(oid);
+		final Order odv = DBConnection.getInstance().getOrder(oid);
 		setBounds(100, 100, 678, 474);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -89,13 +98,11 @@ public class OrderDetailPanel extends JInternalFrame {
 				"UnitsInStock",
 				"UnitsOnOrder",
 				"ReorderLevel",
-				"Discontinued"
 				};
 		JScrollPane scrollPane = new JScrollPane();
 		sl_contentPane.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, contentPane);
 		contentPane.add(scrollPane);
 		table = new JTable(data, columnnames);
-		
 		//table = new JTable();
 		scrollPane.setViewportView(table);
 		
@@ -166,6 +173,13 @@ public class OrderDetailPanel extends JInternalFrame {
 		sl_contentPane.putConstraint(SpringLayout.EAST, panel_1, -15, SpringLayout.WEST, panel);
 		contentPane.add(panel);
 		
+		final JXComboBox productComboBox = new JXComboBox();
+		panel.add(productComboBox);
+		List<Product> allProducts = DBConnection.getInstance().getProducts();
+		for(Product p: allProducts)
+			productComboBox.addItem(p);
+		
+		
 		JButton btnAddProduct = new JButton("Add Product");
 		panel.add(btnAddProduct);
 		
@@ -178,5 +192,36 @@ public class OrderDetailPanel extends JInternalFrame {
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblProducts, 0, SpringLayout.NORTH, panel_1);
 		contentPane.add(lblProducts);
 		
+		
+		btnUpdateOrderInfo.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				DesktopApp.getDesktop().OrderPanelRefresh(oid);
+				dispose();
+			}
+		});
+		
+		btnAddProduct.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				OrderDetail od = new OrderDetail();
+				Product p = ((Product)productComboBox.getSelectedItem());
+				od.setOrderID(odv.getOrderID());
+				od.setDiscount(0);
+				od.setProductID(p.getProductID());
+				od.setQuantity((short) 1);
+				od.setUnitPrice(p.getUnitPrice());
+				DBConnection.getInstance().updateOrCreateOrder(od);
+				
+			}
+		});
+	}
+	
+	public interface OnOrderPanelRefreshListener {
+		public void OrderPanelRefresh(int oid);
+
+		void orderDetail(OrderDetailPanel nof);
+
+		void orderRefresh();
 	}
 }

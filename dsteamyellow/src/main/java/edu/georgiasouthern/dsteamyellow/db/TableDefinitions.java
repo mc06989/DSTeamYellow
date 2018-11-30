@@ -38,6 +38,9 @@ public class TableDefinitions {
 			Description = description;
 		}
 		
+		public String toString() {
+			return getCategoryName();
+		}
 	}
 	
 	@DatabaseTable(tableName="Customers")
@@ -157,6 +160,9 @@ public class TableDefinitions {
 			Fax = fax;
 		}
 		
+		public String toString() {
+			return getContactName();
+		}
 		
 	}
 	
@@ -289,8 +295,7 @@ public class TableDefinitions {
 		private String FirstName;
 		@DatabaseField(canBeNull=false)
 		private String Title;
-		@DatabaseField(canBeNull=true)
-		private String TitleOfCourtesy;
+		
 		@DatabaseField(canBeNull=true)
 		private Date BirthDate;
 		@DatabaseField(canBeNull=true)
@@ -302,7 +307,9 @@ public class TableDefinitions {
 		@DatabaseField(canBeNull=true)
 		private String Region;
 		
-		
+		public String toString() {
+			return getFirstName() +" "+ getLastName();
+		}
 		
 		public int getEmployeeID() {
 			return EmployeeID;
@@ -336,13 +343,6 @@ public class TableDefinitions {
 			Title = title;
 		}
 
-		public String getTitleOfCourtesy() {
-			return TitleOfCourtesy;
-		}
-
-		public void setTitleOfCourtesy(String titleOfCourtesy) {
-			TitleOfCourtesy = titleOfCourtesy;
-		}
 
 		public Date getBirthDate() {
 			return BirthDate;
@@ -416,21 +416,6 @@ public class TableDefinitions {
 			Extension = extension;
 		}
 
-		public int getReportsTo() {
-			return ReportsTo;
-		}
-
-		public void setReportsTo(int reportsTo) {
-			ReportsTo = reportsTo;
-		}
-
-		public String getPhotopath() {
-			return Photopath;
-		}
-
-		public void setPhotopath(String photopath) {
-			Photopath = photopath;
-		}
 
 		@DatabaseField(canBeNull=true)
 		private String PostalCode;
@@ -440,10 +425,6 @@ public class TableDefinitions {
 		private String HomePhone;
 		@DatabaseField(canBeNull=true)
 		private String Extension;
-		@DatabaseField(canBeNull=true)
-		private int ReportsTo;
-		@DatabaseField(canBeNull=true)
-		private String Photopath;
 		@DatabaseField(canBeNull=true)
 		private String Notes;
 		
@@ -543,14 +524,18 @@ public class TableDefinitions {
 		public Product() {
 			
 		}
+		
+		public String toString() {
+			return getProductName();
+		}
 		@DatabaseField(id=true)
 		private int ProductID;
 		@DatabaseField(canBeNull=false)
 		private String ProductName;
 		@DatabaseField(canBeNull=true)
 		private int SupplierID;
-		@DatabaseField(canBeNull=true)
-		private int CategoryID;
+		@DatabaseField(foreign=true,canBeNull=true, columnName="CategoryID")
+		private Category CategoryID;
 		@DatabaseField(canBeNull=true)
 		private String QuantityPerUnit;
 		@DatabaseField(canBeNull=true)
@@ -573,10 +558,10 @@ public class TableDefinitions {
 		public void setSupplierID(int supplierID) {
 			SupplierID = supplierID;
 		}
-		public int getCategoryID() {
+		public Category getCategoryID() {
 			return CategoryID;
 		}
-		public void setCategoryID(int categoryID) {
+		public void setCategoryID(Category categoryID) {
 			CategoryID = categoryID;
 		}
 		public String getQuantityPerUnit() {
@@ -609,26 +594,20 @@ public class TableDefinitions {
 		public void setReorderLevel(short reorderLevel) {
 			ReorderLevel = reorderLevel;
 		}
-		public boolean isDiscontinued() {
-			return Discontinued;
-		}
-		public void setDiscontinued(boolean discontinued) {
-			Discontinued = discontinued;
-		}
+		
 		@DatabaseField(canBeNull=true)
 		private short UnitsInStock;
 		@DatabaseField(canBeNull=true)
 		private short UnitsOnOrder;
 		@DatabaseField(canBeNull=true)
 		private short ReorderLevel;
-		@DatabaseField(canBeNull=true)
-		private boolean Discontinued;
+		
 	}
 
 	@DatabaseTable(tableName="Orders")
 	public static class Order{
-		@DatabaseField(id=true)
-		private Integer OrderID;
+		@DatabaseField(id=true, columnName="OrderID")
+		private int OrderID;
 		@DatabaseField(foreign=true, foreignAutoRefresh=true, columnName="CustomerID")
 		private Customer CustomerID;
 		@DatabaseField(foreign=true, foreignAutoRefresh=true, columnName="EmployeeID")
@@ -639,8 +618,8 @@ public class TableDefinitions {
 		private Date RequiredDate;
 		@DatabaseField(canBeNull=true)
 		private Date ShippedDate;
-		@DatabaseField(foreign=true, columnName="ShipVia")
-		private Shipper ShipVia;
+		@DatabaseField(foreign=true, columnName="ShipperID")
+		private Shipper ShipperID;
 		@DatabaseField(canBeNull=true)
 		private float Freight;
 		@DatabaseField(canBeNull=true)
@@ -656,6 +635,14 @@ public class TableDefinitions {
 		@DatabaseField(canBeNull=true)
 		private String ShipCountry;
 		
+		public Shipper getShipperID() {
+			return ShipperID;
+		}
+
+		public void setShipperID(Shipper shipperID) {
+			ShipperID = shipperID;
+		}
+
 		public Order() {
 			
 		}
@@ -708,13 +695,7 @@ public class TableDefinitions {
 			ShippedDate = shippedDate;
 		}
 
-		public Shipper getShipVia() {
-			return ShipVia;
-		}
-
-		public void setShipVia(Shipper shipVia) {
-			ShipVia = shipVia;
-		}
+		
 
 		public float getFreight() {
 			return Freight;
@@ -785,6 +766,10 @@ public class TableDefinitions {
 		@DatabaseField(canBeNull=true)
 		private String Phone;
 		
+		public String toString() {
+			return getCompanyName();
+		}
+		
 		public Shipper() {
 			
 		}
@@ -816,7 +801,7 @@ public class TableDefinitions {
 		
 	}
 	
-	@DatabaseTable(tableName="Order Details")
+	@DatabaseTable(tableName="OrderDetails")
 	public static class OrderDetail{
 		@DatabaseField(id=true)
 		private int OrderID;
@@ -1006,5 +991,48 @@ public class TableDefinitions {
 		}
 		
 		
+	}
+	
+	
+	@DatabaseTable(tableName="Region")
+	public static class Region{
+		@DatabaseField(id=true)
+		private String RegionID;
+		@DatabaseField(canBeNull=true)
+		private String RegionDescription;
+		@DatabaseField(canBeNull=true)
+		private String RegionTax;
+		
+		public Region() {
+			
+		}
+
+		public String getRegionID() {
+			return RegionID;
+		}
+
+		public void setRegionID(String regionID) {
+			RegionID = regionID;
+		}
+
+		public String getRegionDescription() {
+			return RegionDescription;
+		}
+
+		public void setRegionDescription(String regionDescription) {
+			RegionDescription = regionDescription;
+		}
+
+		public String getRegionTax() {
+			return RegionTax;
+		}
+
+		public void setRegionTax(String regionTax) {
+			RegionTax = regionTax;
+		}
+		
+		public String toString() {
+			return getRegionDescription();
+		}
 	}
 }

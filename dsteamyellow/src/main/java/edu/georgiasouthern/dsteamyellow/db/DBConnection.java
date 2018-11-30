@@ -15,10 +15,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import edu.georgiasouthern.dsteamyellow.db.TableDefinitions.*;
 
-
-//Orders - Done
-//OrderDetails
-//Employees
 public class DBConnection {
 	
 	private static volatile DBConnection sdbconnection;
@@ -29,7 +25,11 @@ public class DBConnection {
 	public static volatile Dao<Product, Integer> productDao;
 	public static volatile Dao<Order, Integer> orderDao;
 	public static volatile Dao<OrderDetail, Integer> orderDetailDao;
+	public static volatile Dao<Shipper, Integer> shipperDao;
+	public static volatile Dao<Region, Integer> regionDao;
+	public static volatile Dao<Customer, Integer> customerDao;
 	ConnectionSource connectionSource;
+	private String urlString;
 	public static DBConnection getInstance() {
 		if (sdbconnection == null) {
 			sdbconnection = new DBConnection();
@@ -38,11 +38,25 @@ public class DBConnection {
 		return sdbconnection;
 	}
 	
+	public static DBConnection getInstance(String urlString) {
+		if (sdbconnection == null) {
+			sdbconnection = new DBConnection();
+			sdbconnection.urlString=urlString;
+		}
+		
+		return sdbconnection;
+	}
+	
 	private DBConnection() {
 		String databaseUrl = "jdbc:sqlserver://dbyellowteam.database.windows.net:1433;database=dbyellowteam;user=dbyellow@dbyellowteam;password=Dbyell0wteam;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 		databaseUrl = "jdbc:sqlserver://localhost:1433;database=Northwind;user=admin;password=password;encrypt=true;trustServerCertificate=true;loginTimeout=5;";
+		databaseUrl = "jdbc:sqlserver://localhost:1433;database=ProjectNorthwind;user=admin;password=password;encrypt=true;trustServerCertificate=true;loginTimeout=5;";
 		
-
+		if ( urlString!=null) {
+				if (!urlString.isEmpty()) {
+				databaseUrl = urlString.toString();}
+		}
+		
 		try {
 			String driverName = "org.gjt.mm.sqlserver.Driver";
 			//Class.forName(driverName);
@@ -62,9 +76,11 @@ public class DBConnection {
 			orderDetailViewDao = DaoFactory.createDao(connectionSource, OrderDetailsView.class);
 			employeeViewDao = DaoFactory.createDao(connectionSource, EmployeeView.class);
 			employeeDao = DaoFactory.createDao(connectionSource, Employee.class);
-			
+			shipperDao = DaoFactory.createDao(connectionSource, Shipper.class);
 			productDao = DaoFactory.createDao(connectionSource, Product.class);
 			orderDao = DaoFactory.createDao(connectionSource, Order.class);
+			regionDao = DaoFactory.createDao(connectionSource, Region.class);
+			customerDao = DaoFactory.createDao(connectionSource, Customer.class);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -83,17 +99,17 @@ public class DBConnection {
 	
 	public Object[][] getOrderViewList(){
 		List<OrderView> orders=null;
-		List<Object[]> a = new ArrayList<>();
+		List<Object[]> a = new ArrayList<Object[]>();
+		List<Order> orderList = null;
 		try {
-			QueryBuilder<OrderView, Integer> q = orderViewDao.queryBuilder();
-			orders = orderViewDao.query(q.prepare());
+			//QueryBuilder<OrderView, Integer> q = orderViewDao.queryBuilder();
+			//orders = orderViewDao.query(q.prepare());
+			orderList = orderDao.queryForAll();
 			
-			
-			for (OrderView o : orders) {
+			for (Order o : orderList) {
 				ArrayList<Object> b = new ArrayList<Object>();
 				b.add(o.getOrderID());
-				b.add(o.getContactName());
-				b.add(o.getCompanyName());
+				b.add(o.getShipName());
 				b.add(o.getRequiredDate());
 				a.add(b.toArray());
 			}
@@ -109,35 +125,7 @@ public class DBConnection {
 		}
 		return  (Object[][]) d;
 	}
-	
-//	
-//	public Object[][] getEmployeeList(){
-//		List<Employee> orders=null;
-//		List<Object[]> a = new ArrayList<>();
-//		try {
-//			QueryBuilder<Employee, Integer> q = employeeDao.queryBuilder();
-//			orders = employeeDao.query(q.prepare());
-//			
-//			
-//			for (Employee o : orders) {
-//				ArrayList<Object> b = new ArrayList<Object>();
-//				b.add(o.getExtension());
-//				
-//				a.add(b.toArray());
-//			}
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		Object[][] d = new Object[a.size()][];
-//		
-//		for(int i =0;i<a.size();i++) {
-//			d[i]=a.get(i);
-//		}
-//		return  (Object[][]) d;
-//	}
-	
+
 	public OrderDetailsView getOrderDetailsView(int oid) {
 		QueryBuilder<OrderDetailsView, Integer> q = orderDetailViewDao.queryBuilder();
 		
@@ -177,7 +165,7 @@ public class DBConnection {
 	
 	public Object[][] getEmployeeViewList(){
 		List<EmployeeView> orders=null;
-		List<Object[]> a = new ArrayList<>();
+		List<Object[]> a = new ArrayList<Object[]>();
 		try {
 			QueryBuilder<EmployeeView, Integer> q = employeeViewDao.queryBuilder();
 			orders = employeeViewDao.query(q.prepare());
@@ -238,7 +226,7 @@ public class DBConnection {
 
 	public Object[][] getProductsOnOrderTable(int oid) {
 		List<Product> products= new ArrayList<Product>();
-		List<Object[]> a = new ArrayList<>();
+		List<Object[]> a = new ArrayList<Object[]>();
 		try {
 			
 			List<OrderDetail> details = orderDetailDao.query(orderDetailDao.queryBuilder().where().eq("OrderID", oid).prepare());
@@ -260,7 +248,7 @@ public class DBConnection {
 				b.add(o.getUnitsInStock());
 				b.add(o.getUnitsOnOrder());
 				b.add(o.getReorderLevel());
-				b.add(o.isDiscontinued());
+				
 				a.add(b.toArray());
 			}
 			
@@ -274,5 +262,91 @@ public class DBConnection {
 			d[i]=a.get(i);
 		}
 		return  (Object[][]) d;
+	}
+	
+	public List<Product> getProducts(){
+		List<Product> products = null;
+		
+		try {
+			products = productDao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return products;
+	}
+	
+	public List<Employee> getEmployees(){
+		List<Employee> products = null;
+		
+		try {
+			products = employeeDao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return products;
+	}
+	
+	public List<Shipper> getShippers(){
+		List<Shipper> products = null;
+		
+		try {
+			products = shipperDao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return products;
+	}
+	
+	public List<Region> getRegions(){
+		List<Region> products = null;
+		
+		try {
+			products = regionDao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return products;
+	}
+
+	public void updateOrCreateOrder(Order o) {
+		try {
+			List<Order> orders = orderDao.queryForAll();
+			o.setOrderID(orders.get(orders.size()-1).getOrderID()+1);
+			orderDao.create(o);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public List<Customer> getCustomers() {
+		List<Customer> products = null;
+		
+		try {
+			products = customerDao.queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return products;
+	}
+
+	public void updateOrCreateOrder(OrderDetail od) {
+		try {
+//			List<Order> orders = orderDao.queryForAll();
+//			o.setOrderID(orders.get(orders.size()-1).getOrderID()+1);
+			orderDetailDao.create(od);
+		} catch (Exception e) {
+			
+		}
 	}
 }

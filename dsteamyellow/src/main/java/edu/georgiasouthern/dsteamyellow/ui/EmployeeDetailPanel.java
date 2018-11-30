@@ -153,7 +153,6 @@ public class EmployeeDetailPanel extends JPanel {
 		lblHomePhoneData.setText(e.getHomePhone());
 		lblTitleData.setText(e.getTitle());
 		lblExtensionData.setText(e.getExtension());
-		lblToCData.setText(e.getTitleOfCourtesy());
 		lblAddressData.setText(e.getAddress());
 		textPane.setText(e.getNotes());
 	}

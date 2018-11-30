@@ -4,7 +4,7 @@
   <groupId>edu.georgiasouthern</groupId>
   <artifactId>dsteamyellow</artifactId>
   <name>dsteamyellow</name>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>
@@ -22,9 +22,19 @@
         <configuration>
           <transformers>
             <transformer>
-              <mainClass>edu.georgiasouthern.dsteamyellow.App</mainClass>
+              <mainClass>edu.georgiasouthern.dsteamyellow.Launcher</mainClass>
             </transformer>
           </transformers>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
         </configuration>
       </plugin>
     </plugins>

@@ -26,9 +26,11 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.ComboBoxEditor;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import javax.swing.JTextField;
 
 public class OrderPanel extends JInternalFrame {
 	private JTable table;
+	private JTextField textField;
 	
 	public OrderPanel() {
 		
@@ -63,7 +65,7 @@ public class OrderPanel extends JInternalFrame {
 		
 		Object[][] OrderViewData = DBConnection.getInstance().getOrderViewList();
 
-		String[] columnnames= {"OrderID", "Contact Name", "Shipping Company", "Required Date"};
+		String[] columnnames= {"OrderID", "Contact Name", "Required Date"};
 		
 		
 
@@ -82,6 +84,7 @@ public class OrderPanel extends JInternalFrame {
 				Point point = mouseEvent.getPoint();
 				int row = table.rowAtPoint(point);
 				if (mouseEvent.getClickCount()==2&&mytable.getSelectedRow()!=-1) {
+					System.out.println((Integer)mytable.getValueAt(mytable.getSelectedRow(),  0));
 					OrderDetailPanel odf = new OrderDetailPanel((Integer) mytable.getValueAt(mytable.getSelectedRow(),  0));
 					DesktopApp.getDesktop().orderDetail(odf);
 				}
@@ -89,15 +92,43 @@ public class OrderPanel extends JInternalFrame {
 		});
 		scrollPane.setViewportView(table);
 		
+		JButton btnUpdateOrders = new JButton("Update Orders");
+		panel.add(btnUpdateOrders);
+		
+		btnUpdateOrders.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				DesktopApp.getDesktop().orderRefresh();
+			}
+		});
+		
 		JButton btnNewOrder = new JButton("New Order");
 		panel.add(btnNewOrder);
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.NORTH, panel);
 		getContentPane().add(panel);
 		
+		JButton btnOpenOrder = new JButton("Open Order");
+		panel.add(btnOpenOrder);
+		textField = new JTextField();
+		panel.add(textField);
+		textField.setColumns(10);
+		
+		btnOpenOrder.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				OrderDetailPanel odf = new OrderDetailPanel(Integer.parseInt(textField.getText()));
+				DesktopApp.getDesktop().orderDetail(odf);
+				
+			}
+		});
+		
+		
+		
+		
 		
 		btnNewOrder.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				NewOrderDialog nod = new NewOrderDialog();
 				nod.setVisible(true);
@@ -110,5 +141,7 @@ public class OrderPanel extends JInternalFrame {
 	
 	public interface OnOrderListener{
 		public void orderDetail(OrderDetailPanel nod);
+		public void orderRefresh();
+		void OrderPanelRefresh(int oid);
 	}
 }
